@@ -9,7 +9,7 @@ import { grey } from "@mui/material/colors";
 
 const white = grey["A100"];
 
-const ClientForm = () => {
+const ClientForm = ({ onSendNewClient }) => {
   const [nif, setNif] = useState("");
   const [name, setName] = useState("");
 
@@ -20,10 +20,11 @@ const ClientForm = () => {
       clientName: name,
     });
     if (docAdded.status === "ok") {
-      setNif("");
-      setName("");
       alert("Cliente agregado con éxito Componenete");
       docAdded = "";
+      onSendNewClient(name);
+      setNif("");
+      setName("");
     } else {
       console.log("Error agregando cliente: ");
       alert("Hubo un error agregando el cliente Componente");
@@ -35,7 +36,7 @@ const ClientForm = () => {
   return (
     <div className=" relative border-gray-300 rounded w-1/2 min-w-96 p-6 shadow-md bg-white">
       <IconId>
-        <BussinesIcon sx={{ color: white, fontSize:30 }} />
+        <BussinesIcon sx={{ color: white, fontSize: 30 }} />
       </IconId>
       <h5 className="pl-20 pb-8 -mt-2 text-2xl tracking-tight text-stone-500 font-light">
         Ingresar nuevo cliente:

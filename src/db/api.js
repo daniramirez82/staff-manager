@@ -1,5 +1,11 @@
 import { db } from "../../firebaseConfig";
-import { doc, setDoc, collection, getDocs } from "firebase/firestore/lite";
+import {
+  doc,
+  setDoc,
+  collection,
+  getDocs,
+  deleteDoc,
+} from "firebase/firestore/lite";
 
 export const setDocWithId = async (collection, id, data) => {
   try {
@@ -14,9 +20,19 @@ export const setDocWithId = async (collection, id, data) => {
 
 export const getCollection = async (myCollection) => {
   const querySnapshot = await getDocs(collection(db, myCollection));
-  querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
-  });
-  return querySnapshot;
+  const clientsData = querySnapshot.docs.map((doc) => ({
+    id: doc.id,
+    ...doc.data(),
+  }));
+
+  return clientsData;
+};
+
+export const deleteWithId = async (id, myCollection) => {
+  try {
+    const deletedDoc = await deleteDoc(doc(db, myCollection, id));
+    console.log(deletedDoc);
+  } catch (error) {
+    console.error("Error borrando entrada");
+  }
 };
