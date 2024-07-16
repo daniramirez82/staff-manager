@@ -12,29 +12,46 @@ const white = grey["A100"];
 const ClientForm = ({ onSendNewClient }) => {
   const [nif, setNif] = useState("");
   const [name, setName] = useState("");
+  const [nifError, setNifError] = useState("");
+
+  // Expresión regular para validar NIF español (empieza con una letra y seguido de 8 dígitos)
+  const nifRegex = /^[A-Z]\d{8}$/;
+
+  const handleNifChange = (e) => {
+    const value = e.target.value;
+    setNif(value);
+    if (!nifRegex.test(value)) {
+      setNifError("El NIF debe tener el formato A12345678");
+    } else {
+      setNifError("");
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (nifError) {
+      alert("Por favor, corrige los errores antes de enviar.");
+      return;
+    }
     let docAdded = await setDocWithId(CLIENTS, nif, {
       nif: nif,
       clientName: name,
     });
     if (docAdded.status === "ok") {
-      alert("Cliente agregado con éxito Componenete");
-      docAdded = "";
+      alert("Cliente agregado con éxito");
       onSendNewClient(name);
       setNif("");
       setName("");
     } else {
-      console.log("Error agregando cliente: ");
-      alert("Hubo un error agregando el cliente Componente");
+      console.log("Error agregando cliente: ", docAdded.error);
+      alert("Hubo un error agregando el cliente");
       setNif("");
       setName("");
     }
   };
 
   return (
-    <div className=" relative border-gray-300 rounded w-1/2 min-w-96 p-6 shadow-md bg-white">
+    <div className="relative border-gray-300 rounded w-1/2 min-w-96 p-6 shadow-md bg-white">
       <IconId>
         <BussinesIcon sx={{ color: white, fontSize: 30 }} />
       </IconId>
@@ -50,9 +67,11 @@ const ClientForm = ({ onSendNewClient }) => {
             type="text"
             id="nif"
             value={nif}
-            onChange={(e) => setNif(e.target.value)}
+            onChange={handleNifChange}
             fullWidth
             required
+            error={!!nifError}
+            helperText={nifError}
           />
         </div>
         <div className="flex items-center pb-4">
