@@ -1,6 +1,35 @@
+// ClientRow.js
+import React from 'react';
 import { CLIENTS } from "../../../db/collections";
+import { useState } from 'react';
 
-const ClientRow = ({ clientName, clientNif, deleteClient }) => {
+const ClientRow = ({
+  clientName,
+  clientNif,
+  deleteClient,
+  onDeleteAClient,
+}) => {
+
+    const [isDeleting, setIsDeleting] = useState(false)
+
+  const handleDelete = async () => {
+    setIsDeleting(true)
+    try {
+      await deleteClient(clientNif, CLIENTS);
+      onDeleteAClient(clientNif);
+      setIsDeleting(false);
+    } catch (error) {
+      console.error('Error deleting client:', error);
+      setIsDeleting(false);
+    }
+  };
+
+  if (isDeleting){
+    return(
+        <div>Borrando</div>
+    )
+  }
+
   return (
     <div className="w-full flex gap-2 py-2 border-t-2 border-stone-200">
       {/* avatar */}
@@ -15,9 +44,15 @@ const ClientRow = ({ clientName, clientNif, deleteClient }) => {
       </div>
       {/* status */}
       <div className="w-1/12 flex justify-center items-center ">check</div>
-      <div className="w-1/12 flex justify-center cursor-pointer items-center " onClick={()=>deleteClient(clientNif, CLIENTS)}>delte</div>
+      <div
+        className="w-1/12 flex justify-center cursor-pointer items-center "
+        onClick={handleDelete}
+      >
+        delete
+      </div>
     </div>
   );
 };
 
-export default ClientRow;
+export default React.memo(ClientRow);
+
