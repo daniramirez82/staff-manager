@@ -21,6 +21,7 @@ const ClientRow = ({
     } catch (error) {
       console.error('Error deleting client:', error);
       setIsDeleting(false);
+    alert("hubo un error eliminando el cliente")
     }
   };
 

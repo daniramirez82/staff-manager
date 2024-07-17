@@ -25,13 +25,14 @@ export const getCollection = async (myCollection) => {
     ...doc.data(),
   }));
 
-  return clientsData;
+  const sortedClientsData = clientsData.sort((a,b)=> a.clientName.localeCompare(b.clientName));
+
+  return sortedClientsData;
 };
 
 export const deleteWithId = async (id, myCollection) => {
   try {
-    const deletedDoc = await deleteDoc(doc(db, myCollection, id));
-    console.log(deletedDoc);
+    await deleteDoc(doc(db, myCollection, id));
   } catch (error) {
     console.error("Error borrando entrada");
   }

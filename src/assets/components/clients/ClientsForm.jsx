@@ -12,16 +12,17 @@ const white = grey["A100"];
 const ClientForm = ({ onSendNewClient }) => {
   const [nif, setNif] = useState("");
   const [name, setName] = useState("");
+  const [alias, setAlias] = useState("");
   const [nifError, setNifError] = useState("");
 
-  // Expresión regular para validar NIF español (empieza con una letra y seguido de 8 dígitos)
-  const nifRegex = /^[A-Z]\d{8}$/;
+  // Expresión regular para validar NIF español (empresas y personas físicas)
+  const nifRegex = /^([A-Z]\d{8}|\d{8}[A-Z])$/;
 
   const handleNifChange = (e) => {
     const value = e.target.value;
     setNif(value);
     if (!nifRegex.test(value)) {
-      setNifError("El NIF debe tener el formato A12345678");
+      setNifError("El NIF debe tener el formato A12345678 o 12345678A");
     } else {
       setNifError("");
     }
@@ -36,6 +37,9 @@ const ClientForm = ({ onSendNewClient }) => {
     let docAdded = await setDocWithId(CLIENTS, nif, {
       nif: nif,
       clientName: name,
+      clientAlias: alias,
+      isActive: true,
+      sites: [],
     });
     if (docAdded.status === "ok") {
       alert("Cliente agregado con éxito");
@@ -59,7 +63,7 @@ const ClientForm = ({ onSendNewClient }) => {
         Ingresar nuevo cliente:
       </h5>
       <form onSubmit={handleSubmit}>
-        <div className="flex items-center pb-4">
+        <div className="pb-4">
           <TextField
             label="Nif"
             color="primary"
@@ -74,7 +78,7 @@ const ClientForm = ({ onSendNewClient }) => {
             helperText={nifError}
           />
         </div>
-        <div className="flex items-center pb-4">
+        <div className="pb-4">
           <TextField
             label="Nombre"
             variant="standard"
@@ -86,7 +90,20 @@ const ClientForm = ({ onSendNewClient }) => {
             required
           />
         </div>
-        <div className="text-stone-500">*Requerido</div>
+        <div className="pb-4">
+          <TextField
+            label="Alias"
+            variant="standard"
+            fullWidth
+            type="text"
+            id="alias"
+            value={alias}
+            onChange={(e) => setAlias(e.target.value)}
+            required
+          />
+        </div>
+
+        <div className="text-stone-500 text-sm">*Requerido</div>
         <div className="flex items-center">
           <div className="min-w-20"></div>
           <div className="justify-end w-full flex">

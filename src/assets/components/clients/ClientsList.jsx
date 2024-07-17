@@ -55,8 +55,9 @@ export const ClientList = () => {
   }
 
   return (
-    <div className="w-full h-full bg-pink-600 p-3 gap-10 flex flex-col items-center">
+    <div className="w-full bg-pink-600 p-3 gap-10 flex flex-col items-center">
       <ClientsForm onSendNewClient={setLastClient} />
+     <div className="w-3/4">
       <TableFrame title={"Clientes"}>
         <ul>
           {listClients.map((client) => (
@@ -71,6 +72,7 @@ export const ClientList = () => {
           ))}
         </ul>
       </TableFrame>
+      </div>
     </div>
   );
 };
