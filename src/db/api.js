@@ -5,7 +5,9 @@ import {
   collection,
   getDocs,
   deleteDoc,
+  updateDoc,
 } from "firebase/firestore/lite";
+import { CLIENTS } from "./collections";
 
 export const setDocWithId = async (collection, id, data) => {
   try {
@@ -25,7 +27,9 @@ export const getCollection = async (myCollection) => {
     ...doc.data(),
   }));
 
-  const sortedClientsData = clientsData.sort((a,b)=> a.clientName.localeCompare(b.clientName));
+  const sortedClientsData = clientsData.sort((a, b) =>
+    a.clientName.localeCompare(b.clientName)
+  );
 
   return sortedClientsData;
 };
@@ -35,5 +39,17 @@ export const deleteWithId = async (id, myCollection) => {
     await deleteDoc(doc(db, myCollection, id));
   } catch (error) {
     console.error("Error borrando entrada");
+  }
+};
+
+export const changeCheked = async (id, myCollection, checkValue) => {
+  console.log("la check value que llega a api es", checkValue);
+  const queryRef = doc(db, myCollection, id);
+  try {
+    await updateDoc(queryRef, {
+      isActive: checkValue,
+    });
+  } catch (err) {
+    console.error("Error: ", err);
   }
 };

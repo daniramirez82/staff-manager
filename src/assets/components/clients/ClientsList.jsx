@@ -6,7 +6,7 @@ import { CLIENTS } from "../../../db/collections";
 import ClientRow from "./ClientsRow";
 
 export const ClientList = () => {
-  const [lastClient, setLastClient] = useState("");
+  const [lastClient, setLastClient] = useState(1);
   const [listClients, setListClients] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -42,7 +42,7 @@ export const ClientList = () => {
     }
   }, []);
 
-  const onDeleteAClient = useCallback((clientNif) => {
+  const reloadList = useCallback(() => {
     setLastClient((prev) => prev + 1);
   }, []);
 
@@ -65,8 +65,9 @@ export const ClientList = () => {
               <ClientRow
                 clientName={client.clientName}
                 clientNif={client.nif}
+                isActive ={client.isActive}
                 deleteClient={deleteClient}
-                onDeleteAClient={onDeleteAClient}
+                onChange={reloadList}
               />
             </li>
           ))}

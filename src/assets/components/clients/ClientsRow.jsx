@@ -1,34 +1,41 @@
 // ClientRow.js
-import React from 'react';
+import React from "react";
 import { CLIENTS } from "../../../db/collections";
-import { useState } from 'react';
+import { useState } from "react";
+import { Checkbox } from "@mui/material";
+import { changeCheked } from "../../../db/api";
 
 const ClientRow = ({
   clientName,
   clientNif,
+  isActive,
   deleteClient,
-  onDeleteAClient,
+  onChange,
 }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [checked, setChecked] = useState(isActive);
 
-    const [isDeleting, setIsDeleting] = useState(false)
+  const handleChecked = async (e) => {
+    setChecked(e.target.checked);
+    await changeCheked(clientNif, CLIENTS, e.target.checked);
+    onChange();
+  };
 
   const handleDelete = async () => {
-    setIsDeleting(true)
+    setIsDeleting(true);
     try {
       await deleteClient(clientNif, CLIENTS);
-      onDeleteAClient(clientNif);
+      onChange();
       setIsDeleting(false);
     } catch (error) {
-      console.error('Error deleting client:', error);
+      console.error("Error deleting client:", error);
       setIsDeleting(false);
-    alert("hubo un error eliminando el cliente")
+      alert("hubo un error eliminando el cliente");
     }
   };
 
-  if (isDeleting){
-    return(
-        <div>Borrando</div>
-    )
+  if (isDeleting) {
+    return <div>Borrando</div>;
   }
 
   return (
@@ -44,11 +51,12 @@ const ClientRow = ({
         <div className="font-light text-sm text-stone-500">{clientNif}</div>
       </div>
       {/* status */}
-      <div className="w-1/12 flex justify-center items-center ">check</div>
+      <div className="w-1/12 flex justify-center items-center ">
+        <Checkbox checked={checked}  onChange={handleChecked} />
+      </div>
       <div
         className="w-1/12 flex justify-center cursor-pointer items-center "
-        onClick={handleDelete}
-      >
+        onClick={handleDelete}>
         delete
       </div>
     </div>
@@ -56,4 +64,3 @@ const ClientRow = ({
 };
 
 export default React.memo(ClientRow);
-
