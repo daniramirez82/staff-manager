@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { setDocWithId } from "../../../db/api.js";
+import { setDocWithId } from "./api.js";
 import { CLIENTS } from "../../../db/collections.js";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";

@@ -1,7 +1,7 @@
 import TableFrame from "../../ui/TableFrame";
 import { useEffect, useState, useCallback } from "react";
 import ClientsForm from "./ClientsForm";
-import { getCollection, deleteWithId } from "../../../db/api";
+import { getCollection, deleteWithId } from "./api";
 import { CLIENTS } from "../../../db/collections";
 import ClientRow from "./ClientsRow";
 

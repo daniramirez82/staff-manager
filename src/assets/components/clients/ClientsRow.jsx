@@ -3,7 +3,7 @@ import React from "react";
 import { CLIENTS } from "../../../db/collections";
 import { useState } from "react";
 import { Checkbox } from "@mui/material";
-import { changeCheked } from "../../../db/api";
+import { changeCheked } from "./api";
 
 const ClientRow = ({
   clientName,
