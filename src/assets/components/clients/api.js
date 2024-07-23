@@ -1,4 +1,4 @@
-import { db } from "../../firebaseConfig";
+import { db } from "../../../../firebaseConfig";
 import {
   doc,
   setDoc,
@@ -7,7 +7,7 @@ import {
   deleteDoc,
   updateDoc,
 } from "firebase/firestore/lite";
-import { CLIENTS } from "./collections";
+import { CLIENTS } from "../../../db/collections";
 
 export const setDocWithId = async (collection, id, data) => {
   try {
