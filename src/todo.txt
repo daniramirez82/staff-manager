@@ -1,0 +1,3 @@
+
+- done: Clientes en pequeño flex col pero en grandes felx normal para que la lista se vea a un lado de la form.
+- replicar la sección clientes pero para sub contratas.
