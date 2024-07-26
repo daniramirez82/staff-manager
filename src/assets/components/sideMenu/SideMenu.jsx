@@ -46,10 +46,10 @@ const SideMenu = ({ menuIsOpen, setMenuIsOpen }) => {
   };
 
   const items = [
-    { text: CLIENTS, icon: <GroupIcon /> },
-    { text: SUBCONTRACTORS, icon: <WorkIcon /> },
-    { text: HOMEWORKERS, icon: <HomeWorkIcon /> },
-    { text: AWAYWORKERS, icon: <SupervisorAccountIcon /> },
+    { text: CLIENTS, icon: <GroupIcon /> , title:"Clientes"},
+    { text: SUBCONTRACTORS, icon: <WorkIcon /> , title:"Contratas"},
+    { text: HOMEWORKERS, icon: <HomeWorkIcon /> , title: "Trab. Cisa"},
+    { text: AWAYWORKERS, icon: <SupervisorAccountIcon /> , title:"Trab. Externos"},
   ];
 
   return (
@@ -72,7 +72,7 @@ const SideMenu = ({ menuIsOpen, setMenuIsOpen }) => {
             disablePadding>
             <ListItemButton>
               <ListItemIcon>{item.icon}</ListItemIcon>
-              <ListItemText primary={item.text} />
+              <ListItemText primary={item.title} />
             </ListItemButton>
           </ListItem>
         ))}

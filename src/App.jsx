@@ -4,8 +4,9 @@ import SideMenu from "./assets/components/sideMenu/SideMenu";
 import TopBar from "./assets/ui/TopBar";
 import { useState } from "react";
 import { useGlobalView } from "./assets/stores/globalView";
-import { CLIENTS, SUBCONTRACTORS } from "./db/collections";
+import { CLIENTS, HOMEWORKERS, SUBCONTRACTORS } from "./db/collections";
 import { SubContractorsMain } from "./assets/components/subcontractors/SubContractorsMain";
+import { HomeWorkersMain } from "./assets/components/homeWorkers/HomeWorkersMain";
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
         <SideMenu menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen}/>
         {globalView === CLIENTS ? <ClientsMain/>:""}
         {globalView === SUBCONTRACTORS ? <SubContractorsMain/>:""}
+        {globalView === HOMEWORKERS ? <HomeWorkersMain/>:""}
 
       </div>
     </React.Fragment>
