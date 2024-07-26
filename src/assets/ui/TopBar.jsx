@@ -1,30 +1,25 @@
-import { IconButton } from "@mui/material";
+import { IconButton, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import {Toolbar} from "@mui/material";
-import { useState } from "react";
+import { Toolbar } from "@mui/material";
 
-const TopBar = ({menuIsOpen, setMenuIsOpen}) => {
-
-
+const TopBar = ({ menuIsOpen, setMenuIsOpen }) => {
   const handleClick = () => {
     // pasar es estado a abierto
-    setMenuIsOpen((prevState)=> !prevState)
+    setMenuIsOpen((prevState) => !prevState);
   };
   return (
-    <Toolbar>
+    <Toolbar variant="dense">
       <IconButton
         color="inherit"
         aria-label="open drawer"
         onClick={handleClick}
         edge="start"
         sx={{
-          marginRight: 5,
-          ...(menuIsOpen && { backgroundColor: "red" }),
+          mr: 2,
         }}>
         <MenuIcon />
       </IconButton>
-
-      <div>Staff Manger</div>
+      <Typography>Staff Manager</Typography>
     </Toolbar>
   );
 };

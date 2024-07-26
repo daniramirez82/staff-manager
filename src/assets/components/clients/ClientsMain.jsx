@@ -5,7 +5,7 @@ import { getCollection, deleteWithId } from "./api";
 import { CLIENTS } from "../../../db/collections";
 import ClientRow from "./ClientsRow";
 
-export const ClientList = () => {
+export const ClientsMain = () => {
   const [lastClient, setLastClient] = useState(1);
   const [listClients, setListClients] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -55,9 +55,9 @@ export const ClientList = () => {
   }
 
   return (
-    <div className="w-full bg-pink-600 p-3 gap-10 flex flex-col items-center">
+    <div className="w-full p-3 gap-10 flex flex-col lg:flex-row items-center">
       <ClientsForm onSendNewClient={setLastClient} />
-     <div className="w-3/4">
+     <div className="w-3/4 lg:self-start lg:pt-14">
       <TableFrame title={"Clientes"}>
         <ul>
           {listClients.map((client) => (

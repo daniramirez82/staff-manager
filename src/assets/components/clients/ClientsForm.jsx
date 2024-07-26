@@ -46,6 +46,7 @@ const ClientForm = ({ onSendNewClient }) => {
       onSendNewClient(name);
       setNif("");
       setName("");
+      setAlias("");
     } else {
       console.log("Error agregando cliente: ", docAdded.error);
       alert("Hubo un error agregando el cliente");
@@ -55,7 +56,7 @@ const ClientForm = ({ onSendNewClient }) => {
   };
 
   return (
-    <div className="relative border-gray-300 rounded w-1/2 min-w-96 p-6 shadow-md bg-white">
+    <div className="mt-12 relative border-gray-300 rounded w-1/2 min-w-96 p-6 shadow-md bg-white">
       <IconId>
         <BussinesIcon sx={{ color: white, fontSize: 30 }} />
       </IconId>

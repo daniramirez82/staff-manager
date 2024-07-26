@@ -1,9 +1,10 @@
-// ClientRow.js
 import React from "react";
 import { CLIENTS } from "../../../db/collections";
 import { useState } from "react";
 import { Checkbox } from "@mui/material";
 import { changeCheked } from "./api";
+import { DeleteForever } from "@mui/icons-material";
+import { TrashIcon } from "../../icons/SvgIcons";
 
 const ClientRow = ({
   clientName,
@@ -22,15 +23,20 @@ const ClientRow = ({
   };
 
   const handleDelete = async () => {
-    setIsDeleting(true);
-    try {
-      await deleteClient(clientNif, CLIENTS);
-      onChange();
-      setIsDeleting(false);
-    } catch (error) {
-      console.error("Error deleting client:", error);
-      setIsDeleting(false);
-      alert("hubo un error eliminando el cliente");
+    let deleting = confirm("¿Desea eliminar el cliente permanentemente?");
+
+    if (deleting) {
+      setIsDeleting(true);
+      try {
+        await deleteClient(clientNif, CLIENTS);
+        onChange();
+        setIsDeleting(false);
+      } catch (error) {
+        console.error("Error deleting client:", error);
+        setIsDeleting(false);
+        alert("hubo un error eliminando el cliente");
+      }
+      deleting=false;
     }
   };
 
@@ -52,12 +58,12 @@ const ClientRow = ({
       </div>
       {/* status */}
       <div className="w-1/12 flex justify-center items-center ">
-        <Checkbox checked={checked}  onChange={handleChecked} />
+        <Checkbox checked={checked} onChange={handleChecked} />
       </div>
       <div
         className="w-1/12 flex justify-center cursor-pointer items-center "
         onClick={handleDelete}>
-        delete
+        <TrashIcon />
       </div>
     </div>
   );

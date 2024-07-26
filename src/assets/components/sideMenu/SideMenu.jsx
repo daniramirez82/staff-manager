@@ -34,10 +34,15 @@ const DrawerHeader = styled("div")(({ theme }) => ({
 const SideMenu = ({ menuIsOpen, setMenuIsOpen }) => {
   const [open, setOpen] = React.useState(false);
   const theme = useTheme();
-  const setGlobalView = useGlobalView((state)=> state.updateView)
+  const setGlobalView = useGlobalView((state) => state.updateView);
 
   const handleClick = () => {
     setMenuIsOpen((prevState) => !prevState);
+  };
+
+  const handleChangeView = (text) => {
+    setGlobalView(text);
+    handleClick();
   };
 
   const items = [
@@ -61,7 +66,10 @@ const SideMenu = ({ menuIsOpen, setMenuIsOpen }) => {
       <Divider />
       <List>
         {items.map((item, index) => (
-          <ListItem onClick={()=>setGlobalView(item.text)} key={item.text} disablePadding>
+          <ListItem
+            onClick={() => handleChangeView(item.text)}
+            key={item.text}
+            disablePadding>
             <ListItemButton>
               <ListItemIcon>{item.icon}</ListItemIcon>
               <ListItemText primary={item.text} />

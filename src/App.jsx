@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ClientList } from "./assets/components/clients/ClientsList";
+import { ClientsMain } from "./assets/components/clients/ClientsMain";
 import SideMenu from "./assets/components/sideMenu/SideMenu";
 import TopBar from "./assets/ui/TopBar";
 import { useState } from "react";
@@ -15,7 +15,7 @@ function App() {
       <div className="w-full bg-stone-100 ">
         <TopBar menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen} />
         <SideMenu menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen}/>
-        {globalView === CLIENTS ? <ClientList/>:""}
+        {globalView === CLIENTS ? <ClientsMain/>:""}
       </div>
     </React.Fragment>
   );
