@@ -56,13 +56,13 @@ export const SubContractorsMain = () => {
 
   return (
     <div className="w-full p-3 gap-10 flex flex-col lg:flex-row items-center">
-      <ClientsForm onSendNewSub={setLastSub} />
+      <SubContractorsForm onSendNewSub={setLastSub} />
      <div className="w-3/4 lg:self-start lg:pt-14">
       <TableFrame title={"Subcontratistas"}>
         <ul>
-          {listClients.map((sub) => (
-            <li key={sub.id} datatype={SubContractorsMain.id}>
-              <ClientRow
+          {listSubs.map((sub) => (
+            <li key={sub.id} datatype={sub.id}>
+              <SubContractorsRow
                 subName={sub.subName}
                 subNif={sub.nif}
                 isActive ={sub.isActive}

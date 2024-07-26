@@ -48,7 +48,7 @@ const SubContractorsRow = ({
       {/* avatar */}
       <div className="w-1/12 flex justify-center items-center">
         <div className="w-6 h-6 text-stone-200 rounded-full font-bold bg-blue-400 flex justify-center items-center">
-          {subName.charAt(0).toUpperCase()}
+          {subName && subName.charAt(0).toUpperCase()}
         </div>
       </div>
       <div className="w-9/12 flex-col pl-2">

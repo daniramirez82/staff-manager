@@ -21,16 +21,16 @@ export const setDocWithId = async (collection, id, data) => {
 
 export const getCollection = async (myCollection) => {
   const querySnapshot = await getDocs(collection(db, myCollection));
-  const clientsData = querySnapshot.docs.map((doc) => ({
+  const subsData = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   }));
 
-  const sortedClientsData = clientsData.sort((a, b) =>
-    a.clientName.localeCompare(b.clientName)
+  const sortedSubData = subsData.sort((a, b) =>
+    a.subName.localeCompare(b.subName)
   );
 
-  return sortedClientsData;
+  return sortedSubData;
 };
 
 export const deleteWithId = async (id, myCollection) => {
