@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { setDocWithId } from "./api.js";
-import { HOMEWORKERS } from "../../../db/collections.js";
+import { OUTSIDEWORKERS } from "../../../db/collections.js";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import IconId from "../../ui/iconId.jsx";
@@ -9,13 +9,14 @@ import { grey } from "@mui/material/colors";
 
 const white = grey["A100"];
 
-const HomeWorkersForm = ({ onSendNewWorker }) => {
+const OutsideWorkersForm = ({ onSendNewWorker }) => {
   const [dni, setDni] = useState("");
   const [name, setName] = useState("");
   const [alias, setAlias] = useState("");
+  const [company, setcompany] = useState("");
   const [dniError, setDniError] = useState("");
 
-  // Expresión regular para validar NIF y nie español (personas físicas nacionales y extrajeros)
+  // Expresión regular para validar nie y dni español (personas físicas nacionales y extrajeros)
   const dniRegex = /^[XYZ]?\d{7,8}[A-Z]$/;
 
   const handleDniChange = (e) => {
@@ -34,14 +35,14 @@ const HomeWorkersForm = ({ onSendNewWorker }) => {
       alert("Por favor, corrige los errores antes de enviar.");
       return;
     }
-    let docAdded = await setDocWithId(HOMEWORKERS, dni, {
+    let docAdded = await setDocWithId(OUTSIDEWORKERS, dni, {
       dni: dni,
       workerName: name,
       workerAlias: alias,
       isActive: true,
       currentSite: {},
       lastSites: [],
-      workerCompany: "Cisa",
+      company: company,
     });
     if (docAdded.status === "ok") {
       alert("Trabajdor agregado con éxito");
@@ -49,12 +50,14 @@ const HomeWorkersForm = ({ onSendNewWorker }) => {
       setDni("");
       setName("");
       setAlias("");
+      setcompany("");
     } else {
       console.log("Error agregando trabajador: ", docAdded.error);
       alert("Hubo un error agregando el trabajador, intentelo mas tarde");
       setDni("");
       setName("");
       setAlias("");
+      setcompany("");
     }
   };
 
@@ -64,7 +67,7 @@ const HomeWorkersForm = ({ onSendNewWorker }) => {
         <BussinesIcon sx={{ color: white, fontSize: 30 }} />
       </IconId>
       <h5 className="pl-20 pb-8 -mt-2 text-2xl tracking-tight text-stone-500 font-light">
-        Ingresar nuevo Trabajador Propio:
+        Ingresar nuevo Trabajador Ajeno:
       </h5>
       <form onSubmit={handleSubmit}>
         <div className="pb-4">
@@ -121,4 +124,4 @@ const HomeWorkersForm = ({ onSendNewWorker }) => {
   );
 };
 
-export default HomeWorkersForm;
+export default OutsideWorkersForm;

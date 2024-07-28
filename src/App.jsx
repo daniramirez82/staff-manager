@@ -4,23 +4,28 @@ import SideMenu from "./assets/components/sideMenu/SideMenu";
 import TopBar from "./assets/ui/TopBar";
 import { useState } from "react";
 import { useGlobalView } from "./assets/stores/globalView";
-import { CLIENTS, HOMEWORKERS, SUBCONTRACTORS } from "./db/collections";
+import {
+  CLIENTS,
+  HOMEWORKERS,
+  OUTSIDEWORKERS,
+  SUBCONTRACTORS,
+} from "./db/collections";
 import { SubContractorsMain } from "./assets/components/subcontractors/SubContractorsMain";
 import { HomeWorkersMain } from "./assets/components/homeWorkers/HomeWorkersMain";
+import { OutsideWorkersMain } from "./assets/components/outsideWorkers/OutsideWorkersMain";
 
 function App() {
-
-  const [menuIsOpen, setMenuIsOpen] = useState(false)
-  const globalView = useGlobalView((state)=> state.view)
+  const [menuIsOpen, setMenuIsOpen] = useState(false);
+  const globalView = useGlobalView((state) => state.view);
   return (
     <React.Fragment>
       <div className="w-full bg-stone-100 ">
         <TopBar menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen} />
-        <SideMenu menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen}/>
-        {globalView === CLIENTS ? <ClientsMain/>:""}
-        {globalView === SUBCONTRACTORS ? <SubContractorsMain/>:""}
-        {globalView === HOMEWORKERS ? <HomeWorkersMain/>:""}
-
+        <SideMenu menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen} />
+        {globalView === CLIENTS ? <ClientsMain /> : ""}
+        {globalView === SUBCONTRACTORS ? <SubContractorsMain /> : ""}
+        {globalView === HOMEWORKERS ? <HomeWorkersMain /> : ""}
+        {globalView === OUTSIDEWORKERS ? <OutsideWorkersMain /> : ""}
       </div>
     </React.Fragment>
   );

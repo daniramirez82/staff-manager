@@ -1,3 +1,7 @@
 
 - done: Clientes en pequeño flex col pero en grandes felx normal para que la lista se vea a un lado de la form.
-- replicar la sección clientes pero para sub contratas.
+- done: replicar la sección clientes pero para sub contratas.
+- La seccion de homworkers tiene un salto cuando elimina un trabajador, no se refresca al ux, revisar
+- hacer la sección de trabajadores externos outside workers
+- agregar input y logica de compañia a la form de outsideworkers
+- hacer cabeceras de tablas

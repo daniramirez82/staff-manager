@@ -1,8 +1,8 @@
 
 export const  CLIENTS = "clients"
-export const  DAYS = "days"
+export const  DAY = "day"
 export const  HOMEWORKERS = "workers"
-export const  AWAYWORKERS = "awayworkers"
+export const  OUTSIDEWORKERS = "outsideworkers"
 export const  SUBCONTRACTORS = "subcontractors"
 export const  SITES = "sites"
 

@@ -1,22 +1,22 @@
 import TableFrame from "../../ui/TableFrame";
 import { useEffect, useState, useCallback } from "react";
-import HomeWorkersForm from "./HomeWorkersForm";
+import OutsideWorkersForm from "./OutsideWorkersForm";
 import { getCollection, deleteWithId } from "./api";
-import { HOMEWORKERS } from "../../../db/collections";
-import HomeWorkersRow from "./HomeWorkersRow";
+import { OUTSIDEWORKERS } from "../../../db/collections";
+import OutsideWorkersRow from "./OutsideWorkersRow";
 
-export const HomeWorkersMain = () => {
+export const OutsideWorkersMain = () => {
   const [lastWorker, setLastWorker] = useState(1);
   const [listWorkers, setListWorkers] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchWorkers = async () => {
     try {
-      const list = await getCollection(HOMEWORKERS);
+      const list = await getCollection(OUTSIDEWORKERS);
       setListWorkers(list);
       setIsLoading(false);
     } catch (e) {
-      console.error("Error fetching home workers", e);
+      console.error("Error fetching outside workers", e);
       setIsLoading(false);
     }
   };
@@ -49,22 +49,23 @@ export const HomeWorkersMain = () => {
   if (isLoading) {
     return (
       <div className="w-full h-full bg-stone-100 p-3 flex-col items-center justify-center">
-        Cargando Trabajadores Propios
+        Cargando Trabajadores Ajenos
       </div>
     );
   }
 
   return (
     <div className="w-full p-3 gap-10 flex flex-col lg:flex-row items-center">
-      <HomeWorkersForm onSendNewWorker={setLastWorker} />
+      <OutsideWorkersForm onSendNewWorker={setLastWorker} />
      <div className="w-3/4 lg:self-start lg:pt-14">
-      <TableFrame title={"Trabajadores Propios"}>
+      <TableFrame title={"Trabajadores Ajenos"}>
         <ul>
           {listWorkers.map((worker) => (
             <li key={worker.id} datatype={worker.id}>
-              <HomeWorkersRow
+              <OutsideWorkersRow
                 workerName={worker.workerName}
                 workerDni={worker.dni}
+                workerCompany={worker.workerCompany}
                 isActive ={worker.isActive}
                 deleteWorker={deleteWorker}
                 onChange={reloadList}

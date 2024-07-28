@@ -18,7 +18,7 @@ import {
   CLIENTS,
   SUBCONTRACTORS,
   HOMEWORKERS,
-  AWAYWORKERS,
+  OUTSIDEWORKERS,
 } from "../../../db/collections";
 import { useGlobalView } from "../../stores/globalView";
 
@@ -49,7 +49,7 @@ const SideMenu = ({ menuIsOpen, setMenuIsOpen }) => {
     { text: CLIENTS, icon: <GroupIcon /> , title:"Clientes"},
     { text: SUBCONTRACTORS, icon: <WorkIcon /> , title:"Contratas"},
     { text: HOMEWORKERS, icon: <HomeWorkIcon /> , title: "Trab. Cisa"},
-    { text: AWAYWORKERS, icon: <SupervisorAccountIcon /> , title:"Trab. Externos"},
+    { text: OUTSIDEWORKERS, icon: <SupervisorAccountIcon /> , title:"Trab. Externos"},
   ];
 
   return (
