@@ -1,19 +1,22 @@
-import React, { useState } from "react";
-import { setDocWithId } from "./api.js";
-import { OUTSIDEWORKERS } from "../../../db/collections.js";
+import React, { useEffect, useState } from "react";
+import { getCollection, setDocWithId } from "./api.js";
+import { OUTSIDEWORKERS, SUBCONTRACTORS } from "../../../db/collections.js";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import IconId from "../../ui/iconId.jsx";
 import { BussinesIcon } from "../../icons/SvgIcons.jsx"; //todo cambiar el icono por uno referente a trabajadores propios
 import { grey } from "@mui/material/colors";
+import SubContracAutoComplete from "./subContractorsAutoComp.jsx";
 
 const white = grey["A100"];
 
 const OutsideWorkersForm = ({ onSendNewWorker }) => {
+  
+
   const [dni, setDni] = useState("");
   const [name, setName] = useState("");
   const [alias, setAlias] = useState("");
-  const [company, setcompany] = useState("");
+  const [company, setCompany] = useState("");
   const [dniError, setDniError] = useState("");
 
   // Expresión regular para validar nie y dni español (personas físicas nacionales y extrajeros)
@@ -50,14 +53,14 @@ const OutsideWorkersForm = ({ onSendNewWorker }) => {
       setDni("");
       setName("");
       setAlias("");
-      setcompany("");
+      setCompany("");
     } else {
       console.log("Error agregando trabajador: ", docAdded.error);
       alert("Hubo un error agregando el trabajador, intentelo mas tarde");
       setDni("");
       setName("");
       setAlias("");
-      setcompany("");
+      setCompany("");
     }
   };
 
@@ -108,6 +111,9 @@ const OutsideWorkersForm = ({ onSendNewWorker }) => {
             onChange={(e) => setAlias(e.target.value)}
             required
           />
+        </div>
+        <div className ="pb-4">
+          <SubContracAutoComplete setCompany={setCompany}/>
         </div>
 
         <div className="text-stone-500 text-sm">*Requerido</div>

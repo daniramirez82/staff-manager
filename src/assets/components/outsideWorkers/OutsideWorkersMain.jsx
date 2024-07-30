@@ -4,6 +4,7 @@ import OutsideWorkersForm from "./OutsideWorkersForm";
 import { getCollection, deleteWithId } from "./api";
 import { OUTSIDEWORKERS } from "../../../db/collections";
 import OutsideWorkersRow from "./OutsideWorkersRow";
+import FirstRow from "../../ui/FirstRow";
 
 export const OutsideWorkersMain = () => {
   const [lastWorker, setLastWorker] = useState(1);
@@ -60,6 +61,9 @@ export const OutsideWorkersMain = () => {
      <div className="w-3/4 lg:self-start lg:pt-14">
       <TableFrame title={"Trabajadores Ajenos"}>
         <ul>
+        <li>
+              <FirstRow table={"Trabajador"} />
+            </li>
           {listWorkers.map((worker) => (
             <li key={worker.id} datatype={worker.id}>
               <OutsideWorkersRow

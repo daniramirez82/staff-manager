@@ -1,10 +1,10 @@
 import { create } from "zustand";
+import { DAYS } from "../../db/collections";
 
 export const useGlobalView = create((set) => ({
-  view: "",
+  view: DAYS,
   updateView: (newView) =>
     set(() => {
-      console.log(newView);
       return { view: newView };
     }),
 }));

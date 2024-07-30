@@ -1,6 +1,6 @@
 
 export const  CLIENTS = "clients"
-export const  DAY = "day"
+export const  DAYS = "days"
 export const  HOMEWORKERS = "workers"
 export const  OUTSIDEWORKERS = "outsideworkers"
 export const  SUBCONTRACTORS = "subcontractors"

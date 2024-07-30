@@ -4,6 +4,7 @@ import ClientsForm from "./ClientsForm";
 import { getCollection, deleteWithId } from "./api";
 import { CLIENTS } from "../../../db/collections";
 import ClientRow from "./ClientsRow";
+import FirstRow from "../../ui/FirstRow";
 
 export const ClientsMain = () => {
   const [lastClient, setLastClient] = useState(1);
@@ -57,22 +58,25 @@ export const ClientsMain = () => {
   return (
     <div className="w-full p-3 gap-10 flex flex-col lg:flex-row items-center">
       <ClientsForm onSendNewClient={setLastClient} />
-     <div className="w-3/4 lg:self-start lg:pt-14">
-      <TableFrame title={"Clientes"}>
-        <ul>
-          {listClients.map((client) => (
-            <li key={client.id} datatype={client.id}>
-              <ClientRow
-                clientName={client.clientName}
-                clientNif={client.nif}
-                isActive ={client.isActive}
-                deleteClient={deleteClient}
-                onChange={reloadList}
-              />
+      <div className="w-3/4 lg:self-start lg:pt-14">
+        <TableFrame title={"Clientes"}>
+          <ul>
+            <li>
+              <FirstRow table={"Cliente"} />
             </li>
-          ))}
-        </ul>
-      </TableFrame>
+            {listClients.map((client) => (
+              <li key={client.id} datatype={client.id}>
+                <ClientRow
+                  clientName={client.clientName}
+                  clientNif={client.nif}
+                  isActive={client.isActive}
+                  deleteClient={deleteClient}
+                  onChange={reloadList}
+                />
+              </li>
+            ))}
+          </ul>
+        </TableFrame>
       </div>
     </div>
   );

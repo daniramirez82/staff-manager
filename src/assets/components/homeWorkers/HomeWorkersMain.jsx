@@ -4,6 +4,7 @@ import HomeWorkersForm from "./HomeWorkersForm";
 import { getCollection, deleteWithId } from "./api";
 import { HOMEWORKERS } from "../../../db/collections";
 import HomeWorkersRow from "./HomeWorkersRow";
+import FirstRow from "../../ui/FirstRow";
 
 export const HomeWorkersMain = () => {
   const [lastWorker, setLastWorker] = useState(1);
@@ -60,6 +61,9 @@ export const HomeWorkersMain = () => {
      <div className="w-3/4 lg:self-start lg:pt-14">
       <TableFrame title={"Trabajadores Propios"}>
         <ul>
+        <li>
+              <FirstRow table={"Trabajador"} />
+            </li>
           {listWorkers.map((worker) => (
             <li key={worker.id} datatype={worker.id}>
               <HomeWorkersRow

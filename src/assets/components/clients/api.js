@@ -4,7 +4,9 @@ import {
   setDoc,
   collection,
   getDocs,
+  getDoc,
   deleteDoc,
+  arrayUnion,
   updateDoc,
 } from "firebase/firestore/lite";
 import { CLIENTS } from "../../../db/collections";
@@ -43,7 +45,6 @@ export const deleteWithId = async (id, myCollection) => {
 };
 
 export const changeCheked = async (id, myCollection, checkValue) => {
-  console.log("la check value que llega a api es", checkValue);
   const queryRef = doc(db, myCollection, id);
   try {
     await updateDoc(queryRef, {
@@ -51,5 +52,34 @@ export const changeCheked = async (id, myCollection, checkValue) => {
     });
   } catch (err) {
     console.error("Error: ", err);
+  }
+};
+
+export const addSiteToClient = async (clientId, newSite) => {
+  const clientDocRef = doc(db, CLIENTS, clientId);
+  try {
+    await updateDoc(clientDocRef, {
+      Sites: arrayUnion(newSite)
+    });
+    console.log("Site added successfully!");
+  } catch (error) {
+    console.error("Error adding site: ", error);
+  }
+};
+
+export const getClientSites = async (clientId) => {
+  const clientDocRef = doc(db, CLIENTS, clientId);
+  try {
+    const clientDoc = await getDoc(clientDocRef);
+    if (clientDoc.exists()) {
+      const clientData = clientDoc.data();
+      return clientData.Sites || [];
+    } else {
+      console.log("No such document!");
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching client sites: ", error);
+    return [];
   }
 };

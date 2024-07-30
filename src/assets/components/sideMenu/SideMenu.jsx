@@ -14,11 +14,13 @@ import GroupIcon from "@mui/icons-material/Group";
 import WorkIcon from "@mui/icons-material/Work";
 import HomeWorkIcon from "@mui/icons-material/HomeWork";
 import SupervisorAccountIcon from "@mui/icons-material/SupervisorAccount";
+import CalendarMonthSharpIcon from '@mui/icons-material/CalendarMonthSharp';
 import {
   CLIENTS,
   SUBCONTRACTORS,
   HOMEWORKERS,
   OUTSIDEWORKERS,
+  DAYS
 } from "../../../db/collections";
 import { useGlobalView } from "../../stores/globalView";
 
@@ -46,8 +48,9 @@ const SideMenu = ({ menuIsOpen, setMenuIsOpen }) => {
   };
 
   const items = [
+    { text: DAYS, icon: <CalendarMonthSharpIcon /> , title:"Home"},
     { text: CLIENTS, icon: <GroupIcon /> , title:"Clientes"},
-    { text: SUBCONTRACTORS, icon: <WorkIcon /> , title:"Contratas"},
+    { text: SUBCONTRACTORS, icon: <WorkIcon /> , title:"Subcontratas"},
     { text: HOMEWORKERS, icon: <HomeWorkIcon /> , title: "Trab. Cisa"},
     { text: OUTSIDEWORKERS, icon: <SupervisorAccountIcon /> , title:"Trab. Externos"},
   ];

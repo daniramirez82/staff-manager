@@ -9,10 +9,12 @@ import {
   HOMEWORKERS,
   OUTSIDEWORKERS,
   SUBCONTRACTORS,
+  DAYS
 } from "./db/collections";
 import { SubContractorsMain } from "./assets/components/subcontractors/SubContractorsMain";
 import { HomeWorkersMain } from "./assets/components/homeWorkers/HomeWorkersMain";
 import { OutsideWorkersMain } from "./assets/components/outsideWorkers/OutsideWorkersMain";
+import Today from "./assets/components/day/Today";
 
 function App() {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
@@ -26,6 +28,8 @@ function App() {
         {globalView === SUBCONTRACTORS ? <SubContractorsMain /> : ""}
         {globalView === HOMEWORKERS ? <HomeWorkersMain /> : ""}
         {globalView === OUTSIDEWORKERS ? <OutsideWorkersMain /> : ""}
+        {globalView === DAYS ? <Today /> : ""}
+
       </div>
     </React.Fragment>
   );

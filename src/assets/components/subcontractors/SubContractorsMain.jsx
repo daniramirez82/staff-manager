@@ -4,6 +4,7 @@ import SubContractorsForm from "./SubContractorsForm";
 import { getCollection, deleteWithId } from "./api";
 import { SUBCONTRACTORS } from "../../../db/collections";
 import SubContractorsRow from "./SubContractorsRow";
+import FirstRow from "../../ui/FirstRow";
 
 export const SubContractorsMain = () => {
   const [lastSub, setLastSub] = useState(1);
@@ -60,6 +61,9 @@ export const SubContractorsMain = () => {
      <div className="w-3/4 lg:self-start lg:pt-14">
       <TableFrame title={"Subcontratistas"}>
         <ul>
+        <li>
+              <FirstRow table={"SubContrata"} />
+            </li>
           {listSubs.map((sub) => (
             <li key={sub.id} datatype={sub.id}>
               <SubContractorsRow
