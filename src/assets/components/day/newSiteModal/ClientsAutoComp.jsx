@@ -12,7 +12,6 @@ export default function ClientsAutoComplete({ setClient }) {
 
   const handleChange = (e,newValue) => {
     const {id, clientName} = newValue;
-    console.log ( id, clientName);
     setClient({id, clientName});
   };
 

@@ -56,7 +56,7 @@ export const ClientsMain = () => {
   }
 
   return (
-    <div className="w-full p-3 gap-10 flex flex-col lg:flex-row items-center">
+    <div className="w-full p-3 gap-10 flex flex-col lg:flex-row items-center lg:items-start">
       <ClientsForm onSendNewClient={setLastClient} />
       <div className="w-3/4 lg:self-start lg:pt-14">
         <TableFrame title={"Clientes"}>

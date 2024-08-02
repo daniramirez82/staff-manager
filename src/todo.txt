@@ -20,3 +20,81 @@ No urgentes:
 - Validaciones...
 - No dejar agregar datos vacios.
 - No dejar agregar ids duplicadas que ya exsitan en la BD
+
+
+
+
+
+
+
+estado global para las obras:
+
+basado en este store de zustand import create from 'zustand';
+
+const useObrasStore = create((set) => ({
+  obras: [], // Aquí almacenarás tus datos de obras
+  addObra: (obra) => set((state) => ({ obras: [...state.obras, obra] })),
+  // Agrega más acciones según tus necesidades
+})); como hacer para editar agregar y eliminar trabajadores para cada una de las obras
+Copilot
+Generando respuestas…
+
+Enviado por Copilot:
+Para agregar, editar y eliminar trabajadores para cada una de las obras en tu estado global con Zustand, puedes extender tu hook useObrasStore con acciones específicas para los trabajadores. Aquí tienes una adaptación de tu hook original:
+
+JavaScript
+
+import create from 'zustand';
+
+const useObrasStore = create((set) => ({
+  obras: [], // Aquí almacenarás tus datos de obras
+  addObra: (obra) => set((state) => ({ obras: [...state.obras, obra] })),
+  editObra: (editedObra) => {
+    const updatedObras = state.obras.map((obra) =>
+      obra.id === editedObra.id ? editedObra : obra
+    );
+    set({ obras: updatedObras });
+  },
+  deleteObra: (obraId) => {
+    const filteredObras = state.obras.filter((obra) => obra.id !== obraId);
+    set({ obras: filteredObras });
+  },
+  // Agrega más acciones según tus necesidades
+}));
+
+export default useObrasStore;
+Código generado por IA. Revisar y usar cuidadosamente. Más información sobre preguntas frecuentes.
+Ahora, puedes utilizar las funciones editObra y deleteObra para manipular los trabajadores asociados a cada obra. Por ejemplo:
+
+JavaScript
+
+// Agregar un trabajador a una obra
+const handleAddWorkerToObra = (obraId, newWorker) => {
+  const obra = useObrasStore.getState().obras.find((obra) => obra.id === obraId);
+  if (obra) {
+    obra.trabajadores.push(newWorker);
+    useObrasStore.getState().editObra(obra);
+  }
+};
+
+// Editar un trabajador en una obra
+const handleEditWorkerInObra = (obraId, editedWorker) => {
+  const obra = useObrasStore.getState().obras.find((obra) => obra.id === obraId);
+  if (obra) {
+    obra.trabajadores = obra.trabajadores.map((worker) =>
+      worker.id === editedWorker.id ? editedWorker : worker
+    );
+    useObrasStore.getState().editObra(obra);
+  }
+};
+
+// Eliminar un trabajador de una obra
+const handleDeleteWorkerFromObra = (obraId, workerId) => {
+  const obra = useObrasStore.getState().obras.find((obra) => obra.id === obraId);
+  if (obra) {
+    obra.trabajadores = obra.trabajadores.filter((worker) => worker.id !== workerId);
+    useObrasStore.getState().editObra(obra);
+  }
+};
+Código generado por IA. Revisar y usar cuidadosamente. Más información sobre preguntas frecuentes.
+Recuerda adaptar estas funciones según la estructura de tus datos y las necesidades específicas de tu aplicación. ¡Espero que esto te ayude a gestionar los trabajadores en tus obras! Si tienes más preguntas, no dudes en consultarme. 😊

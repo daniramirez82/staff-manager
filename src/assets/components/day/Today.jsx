@@ -11,6 +11,8 @@ const Today = () => {
   const [sites, setSites] = useState([]);
   const date = getCurrentDate();
 
+  console.log("sites en Today: " , sites)
+
   const handleOpen = () => setModalState(true);
   const handleClose = () => setModalState(false);
 

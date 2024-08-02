@@ -55,9 +55,7 @@ export const changeCheked = async (id, myCollection, checkValue) => {
   }
 };
 
-export const addSiteToClient = async (clientId, newSite) => {
-  console.log("a addsitetoclient llega como newSite", newSite);
-  
+export const addSiteToClient = async (clientId, newSite) => {  
   // Generar un nuevo ID de sitio basado en la hora actual
   const siteId = `siteId_${new Date().getTime()}`;
   

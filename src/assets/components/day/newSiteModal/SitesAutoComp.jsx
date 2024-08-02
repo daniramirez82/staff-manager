@@ -43,6 +43,7 @@ const SitesAutoComplete = ({ clientId, onChange }) => {
     <Autocomplete
       value={value}
       onChange={handleChange}
+      isOptionEqualToValue={(option, value) => option.title === value.title}
       filterOptions={(options, params) => {
         const filtered = filter(options, params);
 
@@ -59,8 +60,8 @@ const SitesAutoComplete = ({ clientId, onChange }) => {
       options={sites}
       getOptionLabel={(option) => {
         // value selected with enter, right from the input
-        if (typeof option === "string") {
-          return option;
+        if (typeof option.siteName === "string") {
+          return option.siteName;
         }
         if (option.inputValue) {
           return option.inputValue;
