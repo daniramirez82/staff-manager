@@ -56,30 +56,41 @@ export const changeCheked = async (id, myCollection, checkValue) => {
 };
 
 export const addSiteToClient = async (clientId, newSite) => {
-  const clientDocRef = doc(db, CLIENTS, clientId);
+  console.log("a addsitetoclient llega como newSite", newSite);
+  
+  // Generar un nuevo ID de sitio basado en la hora actual
+  const siteId = `siteId_${new Date().getTime()}`;
+  
+  // Crear una referencia al nuevo documento en la subcolección 'sites'
+  const clientDocRef = doc(db, "clients", clientId, "sites", siteId);
+  
   try {
-    await updateDoc(clientDocRef, {
-      Sites: arrayUnion(newSite)
-    });
+    await setDoc(clientDocRef, newSite);
     console.log("Site added successfully!");
   } catch (error) {
     console.error("Error adding site: ", error);
   }
 };
 
-export const getClientSites = async (clientId) => {
-  const clientDocRef = doc(db, CLIENTS, clientId);
+
+export const getSitesForClient = async (clientId) => {
   try {
-    const clientDoc = await getDoc(clientDocRef);
-    if (clientDoc.exists()) {
-      const clientData = clientDoc.data();
-      return clientData.Sites || [];
-    } else {
-      console.log("No such document!");
-      return [];
-    }
+    // Referencia a la subcolección 'sites' dentro del documento del cliente
+    const sitesCollectionRef = collection(db, "clients", clientId, "sites");
+    
+    // Obtén todos los documentos en la subcolección
+    const sitesSnapshot = await getDocs(sitesCollectionRef);
+    
+    // Mapea los documentos a un array de objetos
+    const sites = sitesSnapshot.docs.map(doc => ({
+      id: doc.id,
+      ...doc.data()
+    }));
+
+    console.log("getsites for client desde API",sites)
+    return sites;
   } catch (error) {
-    console.error("Error fetching client sites: ", error);
-    return [];
+    console.error("Error retrieving sites: ", error);
+    return []; // Devuelve un array vacío si ocurre un error
   }
 };

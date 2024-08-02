@@ -2,20 +2,24 @@ import { useState } from "react";
 import NewSiteModal from "./newSiteModal/NewSiteModal";
 import { Box, Button, Typography } from "@mui/material";
 import { addSiteToClient } from "../clients/api";
+import { setDocWithId } from "./api";
+import { DAYS } from "../../../db/collections";
+import { getCurrentDate } from "../../tools/dateTools";
 
 const Today = () => {
   const [modalState, setModalState] = useState(false);
   const [sites, setSites] = useState([]);
+  const date = getCurrentDate();
 
   const handleOpen = () => setModalState(true);
   const handleClose = () => setModalState(false);
 
   const handleAddSite = (client, siteName) => {
-    //todo hacer llamando a API de Clientes y agregar obra
+    
     addSiteToClient(client.id, siteName).then(()=>{
-      setSites([...sites, {client, siteName}]);
-    })
-
+      setSites([...sites, {client, siteName}]); //este objeto es {{clientName, id}, siteName}
+    }).then(()=> setDocWithId(DAYS, date, {client, siteName}))
+    console.log("sites en today ",sites)
   };
 
   return (

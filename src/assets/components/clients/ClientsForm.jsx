@@ -39,7 +39,6 @@ const ClientForm = ({ onSendNewClient }) => {
       clientName: name,
       clientAlias: alias,
       isActive: true,
-      sites: [],
     });
     if (docAdded.status === "ok") {
       alert("Cliente agregado con éxito");

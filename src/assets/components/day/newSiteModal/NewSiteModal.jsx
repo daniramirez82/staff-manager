@@ -16,7 +16,7 @@ const NewSiteModal = ({ open, handleClose, handleAddSite }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleAddSite(client, siteName); 
+    handleAddSite(client, {siteName:siteName}); 
     setClient("");
     setSiteName("");
     handleClose();

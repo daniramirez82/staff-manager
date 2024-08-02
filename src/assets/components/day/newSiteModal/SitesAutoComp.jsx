@@ -2,7 +2,7 @@ import * as React from "react";
 import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
-import { getClientSites } from "../../clients/api"; // Importa tu función para obtener sitios
+import { getSitesForClient } from "../../clients/api"; // Importa tu función para obtener sitios
 
 const filter = createFilterOptions();
 
@@ -11,14 +11,14 @@ const SitesAutoComplete = ({ clientId, onChange }) => {
   const [sites, setSites] = useState([]);
 
   const handleChange = (event, newValue) => {
-    if (typeof newValue === 'string') {
-      setSites((prevSites) => [...prevSites, newValue]);
-      setValue(newValue);
-      onChange(newValue);
+    if (typeof newValue === "string") {
+      setSites((prevSites) => [...prevSites, { siteName: newValue }]);
+      setValue({ siteName: newValue });
+      onChange({ siteName: newValue });
     } else if (newValue && newValue.inputValue) {
-      setSites((prevSites) => [...prevSites, newValue.inputValue]);
-      setValue(newValue.inputValue);
-      onChange(newValue.inputValue);
+      setSites((prevSites) => [...prevSites, { siteName: newValue.inputValue }]);
+      setValue({ siteName: newValue.inputValue });
+      onChange({ siteName: newValue.inputValue });
     } else {
       setValue(newValue);
       onChange(newValue);
@@ -28,8 +28,9 @@ const SitesAutoComplete = ({ clientId, onChange }) => {
   useEffect(() => {
     const fetchSites = async () => {
       if (clientId) {
-        const sitesFromDB = await getClientSites(clientId);
-        setSites(sitesFromDB);
+        const sitesFromDB = await getSitesForClient(clientId);
+        const siteNames = sitesFromDB.map((site)=> site.siteName)
+        setSites(siteNames);
       } else {
         setSites([]);
       }
@@ -58,13 +59,13 @@ const SitesAutoComplete = ({ clientId, onChange }) => {
       options={sites}
       getOptionLabel={(option) => {
         // value selected with enter, right from the input
-        if (typeof option === 'string') {
+        if (typeof option === "string") {
           return option;
         }
         if (option.inputValue) {
           return option.inputValue;
         }
-        return option;
+        return option.siteName || ""; // Asegúrate de devolver una cadena
       }}
       selectOnFocus
       clearOnBlur
@@ -72,7 +73,7 @@ const SitesAutoComplete = ({ clientId, onChange }) => {
       renderOption={(props, option) => {
         const { key, ...rest } = props;
         return (
-          <li {...rest} key={option.inputValue || option}>
+          <li {...rest} key={option.inputValue || option.siteName}>
             {typeof option === "string" ? option : option.title}
           </li>
         );
