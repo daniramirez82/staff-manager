@@ -1,6 +1,6 @@
 import { useState } from "react";
 import NewSiteModal from "./newSiteModal/NewSiteModal";
-import { Box, Button, Typography } from "@mui/material";
+import { Button, } from "@mui/material";
 import { addSiteToClient } from "../clients/api";
 import { setDocWithId } from "./api";
 import { DAYS } from "../../../db/collections";
@@ -11,15 +11,16 @@ const Today = () => {
   const [sites, setSites] = useState([]);
   const date = getCurrentDate();
 
-  console.log("sites en Today: " , sites)
-
   const handleOpen = () => setModalState(true);
   const handleClose = () => setModalState(false);
 
+  console.log("sites en Today: " , sites)
+
+  //esta funcion deberia 1 actualizar el estado global de la lista
   const handleAddSite = (client, siteName) => {
     
     addSiteToClient(client.id, siteName).then(()=>{
-      setSites([...sites, {client, siteName}]); //este objeto es {{clientName, id}, siteName}
+      setSites([...sites, {client, siteName}]); 
     }).then(()=> setDocWithId(DAYS, date, {client, siteName}))
     console.log("sites en today ",sites)
   };
@@ -34,16 +35,8 @@ const Today = () => {
         handleClose={handleClose}
         handleAddSite={handleAddSite}
       />
-      <Box sx={{ mt: 4 }}>
-        {sites.map((site, index) => (
-          <Box
-            key={index}
-            sx={{ mb: 2, p: 2, border: "1px solid #ccc", borderRadius: 2 }}>
-            <Typography variant="h6">{site.siteName}</Typography>
-            <Typography variant="body1">{site.client.clientName}</Typography>
-          </Box>
-        ))}
-      </Box>
+     
+
     </div>
   );
 };

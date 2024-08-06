@@ -6,9 +6,15 @@
 - done: agregar input y logica de compañia a la form de outsideworkers
 - done:hacer cabeceras de tablas
 - done:en la fomr de nueva obra, agregar un autocomplete para el nombre de la obra que llame a a api y recargue todas als obras que ya tiene registradas el cliente o deje incluir una nueva
-cambiar la forma como se guardan los sites y hacerlos con documents id luego 
-trabajar en el sitio del diario para que tambien se guarden por documentos
- NO TRABAJAR CON ARRAYS
+- done:cambiar la forma como se guardan los sites y hacerlos con documents id luego trabajar en el sitio del diario para que tambien se guarden por documentos
+ 
+ ESTADO global
+
+    Hacer un estado global de la lista de obras a renderizar:
+    funciones:
+    Agregar una obra.
+    Editar una obra.
+    Agregar 
 
 - hacer el row desde la api y desde todas las nuevas que se agregen y que tambien se agregen al backend
 
