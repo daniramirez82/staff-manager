@@ -2,7 +2,7 @@ import { useState } from "react";
 import NewSiteModal from "./newSiteModal/NewSiteModal";
 import { Box, Button, Typography } from "@mui/material";
 import { addSiteToClient } from "../clients/api";
-import { setDocWithId } from "./api";
+import { addSiteToDailyEntry } from "./api";
 import { DAYS } from "../../../db/collections";
 import { getCurrentDate } from "../../tools/dateTools";
 
@@ -18,9 +18,13 @@ const Today = () => {
 
   const handleAddSite = (client, siteName) => {
     
-    addSiteToClient(client.id, siteName).then(()=>{
-      setSites([...sites, {client, siteName}]); //este objeto es {{clientName, id}, siteName}
-    }).then(()=> setDocWithId(DAYS, date, {client, siteName}))
+    addSiteToClient(client.id, siteName).then(()=>{//agregamos el sitio nuevo al cliente
+      setSites([...sites, {client, siteName}]); //Actualizamos el estado TODO: hacerlo global con Zustand
+    }).then(()=> {//agregamos el sitio nuevo al dia
+
+      const { siteName: { siteName } } = siteName;
+      
+      addSiteToDailyEntry(DAYS, date, {client, siteName})})
     console.log("sites en today ",sites)
   };
 
