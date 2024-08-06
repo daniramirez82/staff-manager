@@ -4,9 +4,9 @@ import {
   setDoc,
   collection,
   getDocs,
-  getDoc,
+  query,
   deleteDoc,
-  arrayUnion,
+  where,
   updateDoc,
 } from "firebase/firestore/lite";
 import { CLIENTS } from "../../../db/collections";
@@ -55,20 +55,32 @@ export const changeCheked = async (id, myCollection, checkValue) => {
   }
 };
 
-export const addSiteToClient = async (clientId, newSite) => {  
-  // Generar un nuevo ID de sitio basado en la hora actual
-  const siteId = `siteId_${new Date().getTime()}`;
-  
-  // Crear una referencia al nuevo documento en la subcolección 'sites'
-  const clientDocRef = doc(db, "clients", clientId, "sites", siteId);
+export const addSiteToClient = async (clientId, newSite) => {
+  // Crear una referencia a la colección de sitios del cliente
+  const sitesCollectionRef = collection(db, "clients", clientId, "sites");
   
   try {
+    // Verificar si ya existe un sitio con el mismo nombre
+    const querySnapshot = await getDocs(query(sitesCollectionRef, where("siteName", "==", newSite.siteName)));
+    if (!querySnapshot.empty) {
+      console.log("El sitio ya existe.");
+      return;
+    }
+    
+    // Generar un nuevo ID de sitio basado en la hora actual
+    const siteId = `siteId_${new Date().getTime()}`;
+    
+    // Crear una referencia al nuevo documento en la subcolección 'sites'
+    const clientDocRef = doc(sitesCollectionRef, siteId);
+    
+    // Agregar el nuevo sitio
     await setDoc(clientDocRef, newSite);
     console.log("Site added successfully!");
   } catch (error) {
     console.error("Error adding site: ", error);
   }
 };
+
 
 
 export const getSitesForClient = async (clientId) => {
@@ -84,8 +96,6 @@ export const getSitesForClient = async (clientId) => {
       id: doc.id,
       ...doc.data()
     }));
-
-    console.log("getsites for client desde API",sites)
     return sites;
   } catch (error) {
     console.error("Error retrieving sites: ", error);

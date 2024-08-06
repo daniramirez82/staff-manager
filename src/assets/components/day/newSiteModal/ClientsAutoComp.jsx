@@ -5,14 +5,14 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { getCollection } from "../../clients/api";
 import { CLIENTS } from "../../../../db/collections";
 
+// eslint-disable-next-line react/prop-types
 export default function ClientsAutoComplete({ setClient }) {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState([]);
   const loading = open && options.length === 0;
 
   const handleChange = (e,newValue) => {
-    const {id, clientName} = newValue;
-    setClient({id, clientName});
+    setClient(newValue);
   };
 
   React.useEffect(() => {
