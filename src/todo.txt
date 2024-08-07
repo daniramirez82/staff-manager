@@ -8,6 +8,8 @@
 - done:en la fomr de nueva obra, agregar un autocomplete para el nombre de la obra que llame a a api y recargue todas als obras que ya tiene registradas el cliente o deje incluir una nueva
 - done:cambiar la forma como se guardan los sites y hacerlos con documents id luego trabajar en el sitio del diario para que tambien se guarden por documentos
  
+- que recuepere un día y lo pinte
+
  ESTADO global
 
     Hacer un estado global de la lista de obras a renderizar:

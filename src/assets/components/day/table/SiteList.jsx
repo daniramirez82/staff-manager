@@ -8,8 +8,8 @@ const SiteList = ({ data }) => {
       <ul>
         {data.map((item, index) => (
           <li key={index}>
-            <strong>Cliente:</strong> {item.client.clientName} <br />
-            <strong>Nombre del Sitio:</strong> {item.site.siteName}
+            <strong>Cliente:</strong> {item.client.clientAlias}
+            <strong>Nombre del Sitio:</strong> {item.siteName}
           </li>
         ))}
       </ul>
