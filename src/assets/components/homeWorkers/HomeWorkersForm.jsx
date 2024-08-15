@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { setDocWithId } from "./api.js";
 import { HOMEWORKERS } from "../../../db/collections.js";
 import Button from "@mui/material/Button";
@@ -6,6 +5,9 @@ import { TextField } from "@mui/material";
 import IconId from "../../ui/iconId.jsx";
 import { BussinesIcon } from "../../icons/SvgIcons.jsx"; //todo cambiar el icono por uno referente a trabajadores propios
 import { grey } from "@mui/material/colors";
+import HomeWorkersSkillSelector from "./HomeWorkersSkillsSector.jsx";
+import { useState } from "react";
+useState
 
 const white = grey["A100"];
 
@@ -14,6 +16,7 @@ const HomeWorkersForm = ({ onSendNewWorker }) => {
   const [name, setName] = useState("");
   const [alias, setAlias] = useState("");
   const [dniError, setDniError] = useState("");
+  const [skills, setSkills] = useState([]);
 
   // Expresión regular para validar NIF y nie español (personas físicas nacionales y extrajeros)
   const dniRegex = /^[XYZ]?\d{7,8}[A-Z]$/;
@@ -41,6 +44,7 @@ const HomeWorkersForm = ({ onSendNewWorker }) => {
       isActive: true,
       currentSite: {},
       lastSites: [],
+      skills: skills,
       workerCompany: "Cisa",
     });
     if (docAdded.status === "ok") {
@@ -49,12 +53,14 @@ const HomeWorkersForm = ({ onSendNewWorker }) => {
       setDni("");
       setName("");
       setAlias("");
+      setSkills([]);
     } else {
       console.log("Error agregando trabajador: ", docAdded.error);
       alert("Hubo un error agregando el trabajador, intentelo mas tarde");
       setDni("");
       setName("");
       setAlias("");
+      setSkills([]);
     }
   };
 
@@ -106,6 +112,7 @@ const HomeWorkersForm = ({ onSendNewWorker }) => {
             required
           />
         </div>
+        <HomeWorkersSkillSelector onChangeSkills={setSkills}/>
 
         <div className="text-stone-500 text-sm">*Requerido</div>
         <div className="flex items-center">

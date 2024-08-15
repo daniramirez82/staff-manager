@@ -42,6 +42,7 @@ const SitesAutoComplete = ({ clientId, onChange }) => {
   return (
     <Autocomplete
       value={value}
+      key={value}
       onChange={handleChange}
       isOptionEqualToValue={(option, value) => option.title === value.title}
       filterOptions={(options, params) => {
@@ -66,7 +67,7 @@ const SitesAutoComplete = ({ clientId, onChange }) => {
         if (option.inputValue) {
           return option.inputValue;
         }
-        return option.siteName || ""; // Asegúrate de devolver una cadena
+        return option.siteName || ""; 
       }}
       selectOnFocus
       clearOnBlur
@@ -74,7 +75,7 @@ const SitesAutoComplete = ({ clientId, onChange }) => {
       renderOption={(props, option) => {
         const { key, ...rest } = props;
         return (
-          <li {...rest} key={option.inputValue || option.siteName}>
+          <li {...rest} key = {option.title}>
             {typeof option === "string" ? option : option.title}
           </li>
         );

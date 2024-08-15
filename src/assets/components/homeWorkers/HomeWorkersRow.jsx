@@ -1,6 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
 import { HOMEWORKERS } from "../../../db/collections";
-import { useState } from "react";
 import { Checkbox } from "@mui/material";
 import { changeCheked } from "./api";
 import { TrashIcon } from "../../icons/SvgIcons";
@@ -8,6 +7,7 @@ import { TrashIcon } from "../../icons/SvgIcons";
 const HomeWorkerRow = ({
   workerName,
   workerDni,
+  skills,
   isActive,
   deleteWorker,
   onChange,
@@ -35,7 +35,7 @@ const HomeWorkerRow = ({
         setIsDeleting(false);
         alert("hubo un error eliminando el trabajador");
       }
-      deleting=false;
+      deleting = false;
     }
   };
 
@@ -54,14 +54,23 @@ const HomeWorkerRow = ({
       <div className="w-9/12 flex-col pl-2">
         <div className="text-stone-700">{workerName}</div>
         <div className="font-light text-sm text-stone-500">{workerDni}</div>
+        <div>
+          {skills && skills.map((skill, i) => (
+            i === 0 ? (
+              <span key={i}>{skill}</span>
+            ) : (
+              <span key={i}>-{skill}</span>
+            )
+          ))}
+        </div>
       </div>
-      {/* status */}
-      <div className="w-1/12 flex justify-center items-center ">
+      <div className="w-1/12 flex justify-center items-center">
         <Checkbox checked={checked} onChange={handleChecked} />
       </div>
       <div
-        className="w-1/12 flex justify-center cursor-pointer items-center "
-        onClick={handleDelete}>
+        className="w-1/12 flex justify-center cursor-pointer items-center"
+        onClick={handleDelete}
+      >
         <TrashIcon />
       </div>
     </div>

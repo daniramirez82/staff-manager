@@ -3,13 +3,16 @@
 import { db } from "../../../../firebaseConfig";
 import {
   collection,
-  addDoc,
+  setDoc,
+  doc,
+  updateDoc,
   getDocs
 } from "firebase/firestore/lite";
 
-export const addSiteToDailyEntry = async (myCollection, id, data) => {
+export const addSiteToDailyEntry = async (myCollection, dayId, data) => {
   try {
-    const docRef = await addDoc(collection(db, myCollection, id, "sites"), data);
+    const docRef = doc(db, myCollection, dayId, "sites", data.siteDayId);
+    await setDoc(docRef, data);
     return { status: "ok", docRef };
   } catch (error) {
     console.error("Error agregando cambios: ", error);
@@ -18,9 +21,9 @@ export const addSiteToDailyEntry = async (myCollection, id, data) => {
   }
 };
 
-export const getSitesFromDailyEntry = async (myCollection, id) => {
+export const getSitesFromDailyEntry = async (myCollection, dayId) => {
   try {
-    const querySnapshot = await getDocs(collection(db, myCollection, id, "sites"));
+    const querySnapshot = await getDocs(collection(db, myCollection, dayId, "sites"));
     const sites = [];
     querySnapshot.forEach((doc) => {
       sites.push({ id: doc.id, ...doc.data() });
@@ -32,6 +35,19 @@ export const getSitesFromDailyEntry = async (myCollection, id) => {
     return { status: "fail" };
   }
 };
+
+
+export const editTypeSite = async (myCollection, dayId, siteId, newTypes) => {
+  try {
+    const siteRef = doc(db, `${myCollection}/${dayId}/sites/${siteId}`);
+    await updateDoc(siteRef, { types: newTypes });
+  } catch (err) {
+    console.log("error actualizando los tipos de obra", err);
+    alert("no se pudo actualizar los tipos de obra, recargue la página e inténtelo más tarde");
+  }
+};
+
+
 
 
 

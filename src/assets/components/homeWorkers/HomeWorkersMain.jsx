@@ -65,12 +65,13 @@ export const HomeWorkersMain = () => {
               <FirstRow table={"Trabajador"} />
             </li>
           {listWorkers.map((worker) => (
-            <li key={worker.id} datatype={worker.id}>
+            <li key={worker.id}>
               <HomeWorkersRow
                 workerName={worker.workerName}
                 workerDni={worker.dni}
                 isActive ={worker.isActive}
                 deleteWorker={deleteWorker}
+                skills ={worker.skills}
                 onChange={reloadList}
               />
             </li>

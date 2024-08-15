@@ -1,15 +1,23 @@
-import React from 'react';
+import React, { memo } from 'react';
+import SiteRow from './SiteRow';
+import { sitesArrayPropTypes } from '../../../tools/Proptypes';
 
-// eslint-disable-next-line react/prop-types
-const SiteList = ({ data }) => {
+const SiteList = ({ data, day }) => {
+  console.log("data en SiteList", data);
   return (
     <div>
       <h2>Lista de Sitios</h2>
       <ul>
-        {data.map((item, index) => (
-          <li key={index}>
-            <strong>Cliente:</strong> {item.client.clientAlias}
-            <strong>Nombre del Sitio:</strong> {item.siteName}
+        {data.map((item, i) => (
+          <li key={item.id}>
+            <MemoizedSiteRow
+              i={i + 1}
+              day={day}
+              siteDayId={item.siteDayId}
+              client={item.client.clientAlias}
+              site={item.siteName}
+              types={item.types}
+            />
           </li>
         ))}
       </ul>
@@ -17,4 +25,20 @@ const SiteList = ({ data }) => {
   );
 };
 
+SiteList.propTypes = {
+  data: sitesArrayPropTypes.isRequired,
+};
+
+const MemoizedSiteRow = memo(SiteRow, (prevProps, nextProps) => {
+  return (
+    prevProps.i === nextProps.i &&
+    prevProps.day === nextProps.day &&
+    prevProps.siteDayId === nextProps.siteDayId &&
+    prevProps.client === nextProps.client &&
+    prevProps.site === nextProps.site &&
+    prevProps.types === nextProps.types
+  );
+});
+
 export default SiteList;
+
