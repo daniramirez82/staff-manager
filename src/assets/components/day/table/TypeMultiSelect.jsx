@@ -2,7 +2,6 @@ import Autocomplete from '@mui/material/Autocomplete';
 import TextField from '@mui/material/TextField';
 import Checkbox from '@mui/material/Checkbox';
 import { MenuItem } from '@mui/material';
-import { useState } from 'react';
 
 const TypeMultiSelect = ({selectedOptions,setSelectedOptions}) => {
 

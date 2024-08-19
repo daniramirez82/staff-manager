@@ -1,9 +1,8 @@
-import React, { memo } from 'react';
+import { memo } from 'react';
 import SiteRow from './SiteRow';
 import { sitesArrayPropTypes } from '../../../tools/Proptypes';
 
 const SiteList = ({ data, day }) => {
-  console.log("data en SiteList", data);
   return (
     <div>
       <h2>Lista de Sitios</h2>

@@ -12,6 +12,10 @@
 - done: feature, tipo de obra, agregar cambio al estado global, tambine agregar funcion de cambio a la bd,
     generar un backdrop y un ventana para la seleccion y no ocupar espacio en la pantalla
 - done: En el form de homeworkers agregar la habilidad o habilidades que realiza cada trabajador.
+
+- los homeworkers si agregan al estado global como un array dentro de un array, revisar estado
+agregar los home workers a la base de datos
+
 - En el estado general, cargar los trabajadores disponible desde base de datos
 - Pintar en el dia los trabajadores clasificados por su habilidad (skil): varias tablas representadas por un mismo skill, no importa que los trabajadores se repitan en cada tablas 
     lo importante es que su estado de disponibilidad se actualice reactivamente, en el dom y en la DB.

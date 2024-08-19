@@ -23,6 +23,8 @@ const Today = () => {
   const handleOpen = () => setModalState(true);
   const handleClose = () => setModalState(false);
 
+  console.log("actual sites en el Store",sitesFromStore)
+
   useEffect(() => {
     //alcanza todos los sitios ya guardados en la BD con el dia de hoy y los actualiza en el estado global
     const fechSitesFromDB = async () => {

@@ -19,7 +19,7 @@ export const useSitesStore = create((set, get) => ({
   // Editar un sitio y mantener el orden
   editSite: (editedSite) => {
     const updatedSites = get().sites.map((site) =>
-      site.id === editedSite.id ? editedSite : site
+      site.siteDayId === editedSite.siteDayId ? editedSite : site
     );
     updatedSites.sort((a, b) => a.client.clientAlias.localeCompare(b.client.clientAlias));
     set({ sites: updatedSites });
@@ -39,15 +39,28 @@ export const useSitesStore = create((set, get) => ({
     );
     set({ sites: updatedSites });
   },
+
+  //alcanza todos los home workers de un sitio
+  getHomeWorkers: (siteDayId) => {
+    const site = get().sites.find(site => site.sitedayID === siteDayId);
+    return site ? site.homeWorkers : [];
+  },
+
+  //alcanza todos los outsideWorkers de un sitio
+  getOutsideWorkers: (siteDayId) => {
+    const site = get().site.find(site => site.sitedayID === siteDayId);
+    return site ? site.outsideWorkers : [];
+  }
+
 }));
 
-export const useWorkersStore = create((set, get)=>({
+export const useWorkersStore = create((set, get) => ({
 
   availableHomeWorkers: [],
   availableOutsideWorkers: [],
 
-   // Añadir trabajadores disponibles a availableHomeWorkers
-   addAvailableHomeWorker: (workers) => {
+  // Añadir trabajadores disponibles a availableHomeWorkers
+  addAvailableHomeWorker: (workers) => {
     set({ availableHomeWorkers: workers });
   },
 
@@ -60,17 +73,12 @@ export const useWorkersStore = create((set, get)=>({
 
 
 // Agregar un trabajador a una site
-export const handleAddWorkerToSite = (siteId, newWorker) => {
+export const handleAddWorkerToSite = (siteDayId, newWorkers) => {
   const { sites, editSite } = useSitesStore.getState();
-  const site = sites.find((site) => site.id === siteId);
+  const site = sites.find((site) => site.siteDayId === siteDayId);
   if (site) {
-    if (newWorker.company === "Cisa") {
-      site.homeWorkers = [...site.homeWorkers, newWorker]
-    } else {
-      site.outsideWorkers = [...site.outsideWorkers, newWorker];
-    }
+    site.homeWorkers = [newWorkers]
     editSite(site);
-
     return site;
   }
 };
