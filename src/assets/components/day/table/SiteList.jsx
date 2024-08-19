@@ -16,6 +16,7 @@ const SiteList = ({ data, day }) => {
               client={item.client.clientAlias}
               site={item.siteName}
               types={item.types}
+              homeWorkers={item.homeWorkers}
             />
           </li>
         ))}
@@ -35,7 +36,8 @@ const MemoizedSiteRow = memo(SiteRow, (prevProps, nextProps) => {
     prevProps.siteDayId === nextProps.siteDayId &&
     prevProps.client === nextProps.client &&
     prevProps.site === nextProps.site &&
-    prevProps.types === nextProps.types
+    prevProps.types === nextProps.types &&
+    prevProps.homeWorkers === nextProps.homeWorkers
   );
 });
 

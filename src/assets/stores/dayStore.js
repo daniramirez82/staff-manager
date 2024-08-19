@@ -42,7 +42,7 @@ export const useSitesStore = create((set, get) => ({
 
   //alcanza todos los home workers de un sitio
   getHomeWorkers: (siteDayId) => {
-    const site = get().sites.find(site => site.sitedayID === siteDayId);
+    const site = get().sites.find(site => site.sitedayId === siteDayId);
     return site ? site.homeWorkers : [];
   },
 
@@ -77,7 +77,7 @@ export const handleAddWorkerToSite = (siteDayId, newWorkers) => {
   const { sites, editSite } = useSitesStore.getState();
   const site = sites.find((site) => site.siteDayId === siteDayId);
   if (site) {
-    site.homeWorkers = [newWorkers]
+    site.homeWorkers = newWorkers;
     editSite(site);
     return site;
   }

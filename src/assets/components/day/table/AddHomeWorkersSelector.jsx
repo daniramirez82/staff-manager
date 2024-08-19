@@ -7,18 +7,15 @@ import { HOMEWORKERS } from "../../../../db/collections";
 import { getCollection } from "../../homeWorkers/api";
 import PropTypes from "prop-types";
 
-const AddHomeWorkersSelector = ({ handleAddWorkers }) => {
+const AddHomeWorkersSelector = ({ handleAddWorkers, workersOnState }) => {
   const [options, setOptions] = useState([]);
   const [selectedWorkers, setSelectedWorkers] = useState([]);
 
   useEffect(() => {
     const fetchHomeWorkers = async () => {
-      // Tomar de la DB todos los trabajadores home workers que no tengan una site asignado
+      // Tomar de la DB todos los trabajadores home workers que no tengan un site asignado
       const homeWorkers = await getCollection(HOMEWORKERS);
-      console.log(
-        "en el add homworkers selector llegan todos los home worker",
-        homeWorkers
-      );
+    
       const availableHomeWorkers = homeWorkers.filter(
         (worker) => Object.keys(worker.currentSite).length === 0
       );
@@ -29,9 +26,16 @@ const AddHomeWorkersSelector = ({ handleAddWorkers }) => {
     fetchHomeWorkers();
   }, []);
 
+  // Cargar la prop workersOnState en selectedWorkers solo una vez
+  useEffect(() => {
+    if (selectedWorkers.length === 0 && workersOnState) {
+      setSelectedWorkers(workersOnState);
+    }
+  }, [selectedWorkers, workersOnState]);
+
   const handleWorkerSelection = (event, newValue) => {
-    setSelectedWorkers(newValue); //añadir la seleccion al estado del componente
-    handleAddWorkers(newValue); // anadir la seleccion al estado global y a la bd
+    setSelectedWorkers(newValue); // Añadir la selección al estado del componente
+    handleAddWorkers(newValue); // Añadir la selección al estado global y a la BD
   };
 
   return (
@@ -42,17 +46,18 @@ const AddHomeWorkersSelector = ({ handleAddWorkers }) => {
       getOptionLabel={(option) => option.workerAlias}
       value={selectedWorkers}
       onChange={handleWorkerSelection}
+      isOptionEqualToValue={(option, value) => option.dni === value.dni} 
       renderOption={(props, option, { selected }) => (
-        <MenuItem  {...props} key={option.workerAlias}>
-          <Checkbox checked={selected}  key={option.workerAlias} style={{ marginRight: 8 }} />
+        <MenuItem {...props} key={option.workerAlias}>
+          <Checkbox checked={selected} key={option.workerAlias} style={{ marginRight: 8 }} />
           {option.workerAlias}
         </MenuItem>
       )}
-      renderTags={(tagValue, getTagProps) => {
-        return tagValue.map((option, index) => (
+      renderTags={(tagValue, getTagProps) => 
+        tagValue.map((option, index) => (
           <Chip {...getTagProps({ index })} key={option.dni} label={option.workerAlias} />
         ))
-      }}
+      }
       renderInput={(params) => (
         <TextField
           {...params}
@@ -67,6 +72,7 @@ const AddHomeWorkersSelector = ({ handleAddWorkers }) => {
 
 AddHomeWorkersSelector.propTypes = {
   handleAddWorkers: PropTypes.func.isRequired,
+  workersOnState: PropTypes.array, // Debe ser un array, no un objeto
 };
 
 export default AddHomeWorkersSelector;
