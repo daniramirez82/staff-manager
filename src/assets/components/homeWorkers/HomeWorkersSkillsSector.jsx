@@ -1,15 +1,16 @@
 import { MenuItem, Checkbox, ListItemText, Select, InputLabel, FormControl } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const options = ['Lana', 'Mortero', 'Sellado', 'Pintura', 'Chorro', 'Placa', 'Ayudante'];
 
-const HomeWorkersSkillSelector = ({onChangeSkills}) => {
+const HomeWorkersSkillSelector = ({ onChangeSkills }) => {
     const [selectedOptions, setSelectedOptions] = useState([]);
 
     const handleChange = (event) => {
         setSelectedOptions(event.target.value);
         onChangeSkills(event.target.value);
     };
+
 
     return (
         <div>
@@ -33,3 +34,4 @@ const HomeWorkersSkillSelector = ({onChangeSkills}) => {
 };
 
 export default HomeWorkersSkillSelector;
+

@@ -8,7 +8,7 @@ const SiteList = ({ data, day }) => {
       <h2>Lista de Sitios</h2>
       <ul>
         {data.map((item, i) => (
-          <li key={item.id}>
+          <li key={item.siteDayId}>
             <MemoizedSiteRow
               i={i + 1}
               day={day}
@@ -17,6 +17,7 @@ const SiteList = ({ data, day }) => {
               site={item.siteName}
               types={item.types}
               homeWorkers={item.homeWorkers}
+              outsideWorkers={item.outsideWorkers}
             />
           </li>
         ))}
@@ -37,7 +38,9 @@ const MemoizedSiteRow = memo(SiteRow, (prevProps, nextProps) => {
     prevProps.client === nextProps.client &&
     prevProps.site === nextProps.site &&
     prevProps.types === nextProps.types &&
-    prevProps.homeWorkers === nextProps.homeWorkers
+    prevProps.homeWorkers === nextProps.homeWorkers &&
+    prevProps.outsideWorkers === nextProps.outsideWorkers
+
   );
 });
 

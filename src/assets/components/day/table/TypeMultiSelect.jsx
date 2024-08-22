@@ -17,6 +17,7 @@ const TypeMultiSelect = ({selectedOptions,setSelectedOptions}) => {
         multiple
         id="multi-select"
         options={options}
+        disableCloseOnSelect
         value={selectedOptions}
         onChange={handleSelectChange}
         renderOption={(props, option, { selected }) => (

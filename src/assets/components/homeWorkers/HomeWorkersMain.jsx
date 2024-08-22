@@ -57,7 +57,9 @@ export const HomeWorkersMain = () => {
 
   return (
     <div className="w-full p-3 gap-10 flex flex-col lg:flex-row items-center">
-      <HomeWorkersForm onSendNewWorker={setLastWorker} />
+      <div className="w-2/4 self-start ">
+      <HomeWorkersForm  onSendNewWorker={setLastWorker} />
+      </div>
      <div className="w-3/4 lg:self-start lg:pt-14">
       <TableFrame title={"Trabajadores Propios"}>
         <ul>

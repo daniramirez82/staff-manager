@@ -3,8 +3,8 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import { Chip, MenuItem } from "@mui/material";
-import { HOMEWORKERS } from "../../../../db/collections";
-import { getCollection } from "../../homeWorkers/api";
+import { HOMEWORKERS } from "../../../../../db/collections";
+import { getCollection } from "../../../homeWorkers/api";
 import PropTypes from "prop-types";
 
 const AddHomeWorkersSelector = ({ handleAddWorkers, workersOnState }) => {
@@ -35,16 +35,18 @@ const AddHomeWorkersSelector = ({ handleAddWorkers, workersOnState }) => {
 
   const handleWorkerSelection = (event, newValue) => {
     setSelectedWorkers(newValue); // Añadir la selección al estado del componente
-    handleAddWorkers(newValue); // Añadir la selección al estado global y a la BD
+    handleAddWorkers(newValue, HOMEWORKERS); // Añadir la selección al estado global y a la BD
   };
 
   return (
     <Autocomplete
+      className="w-64"
       multiple
       id="home-workers-multi-select"
       options={options}
       getOptionLabel={(option) => option.workerAlias}
       value={selectedWorkers}
+      disableCloseOnSelect
       onChange={handleWorkerSelection}
       isOptionEqualToValue={(option, value) => option.dni === value.dni} 
       renderOption={(props, option, { selected }) => (

@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { HOMEWORKERS } from '../../db/collections';
 
 
 export const useSitesStore = create((set, get) => ({
@@ -73,14 +74,25 @@ export const useWorkersStore = create((set, get) => ({
 
 
 // Agregar un trabajador a una site
-export const handleAddWorkerToSite = (siteDayId, newWorkers) => {
+//todo agregar un parametro a la función que defina si los trabajadores añadidos son de cisa o son externos
+//si son de cisa agregar a site.homeWorkers
+// si son externos agregar a site.outSideWorkers
+export const handleAddWorkersToSite = (siteDayId, newWorkers, company) => {
+  console.log("estos son los trabajadores que llegan al store", newWorkers)
   const { sites, editSite } = useSitesStore.getState();
   const site = sites.find((site) => site.siteDayId === siteDayId);
   if (site) {
-    site.homeWorkers = newWorkers;
+    //revisamos si los newWorkers son de cisa
+    //lo agregamos al campo de los trabajadores de casa
+    if(company === HOMEWORKERS){
+      site.homeWorkers = newWorkers;
+      //de lo contrario se agrega al campo de trabajadores de afuera
+    }else{
+      site.outsideWorkers = newWorkers;
+    }
+    }
     editSite(site);
     return site;
-  }
 };
 
 

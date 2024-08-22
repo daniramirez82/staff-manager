@@ -21,7 +21,7 @@ function App() {
   const globalView = useGlobalView((state) => state.view);
   return (
     <React.Fragment>
-      <div className="w-full bg-stone-100 ">
+      <div className="w-full bg-stone-100 min-w-[1024px]">
         <TopBar menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen} />
         <SideMenu menuIsOpen={menuIsOpen} setMenuIsOpen={setMenuIsOpen} />
         {globalView === CLIENTS ? <ClientsMain /> : ""}

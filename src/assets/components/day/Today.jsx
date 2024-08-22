@@ -3,7 +3,7 @@ import NewSiteModal from "./newSiteModal/NewSiteModal";
 import { Button, } from "@mui/material";
 import { addSiteToClient } from "../clients/api";
 import { addSiteToDailyEntry, getSitesFromDailyEntry } from "./api";
-import { DAYS, HOMEWORKERS } from "../../../db/collections";
+import { DAYS, HOMEWORKERS, OUTSIDEWORKERS } from "../../../db/collections";
 import { getCurrentDate } from "../../tools/dateTools";
 import SiteList from "./table/SiteList";
 import { useSitesStore, useWorkersStore } from "../../stores/dayStore";
@@ -17,13 +17,13 @@ const Today = () => {
   const sitesFromStore = useSitesStore((state) => state.sites);
   const addSites = useSitesStore((state) => state.addSites);
   const addAvailableHomeWorker = useWorkersStore((state) => state.addAvailableHomeWorker);
-
+  const addAvailableOutsideWorkers = useWorkersStore((state) => state.addAvailableOutsideWorker);
   const date = getCurrentDate();
 
   const handleOpen = () => setModalState(true);
   const handleClose = () => setModalState(false);
 
-  console.log("actual sites en el Store",sitesFromStore)
+  console.log("actual sites en el Store", sitesFromStore)
 
   useEffect(() => {
     //alcanza todos los sitios ya guardados en la BD con el dia de hoy y los actualiza en el estado global
@@ -33,15 +33,16 @@ const Today = () => {
     }
     fechSitesFromDB();
 
-    //alcanza todos los trabajadores disponibles en el día 
+    //alcanza todos los trabajadores (de casa y de afuera) disponibles en el día 
+    //y los agrega al estado global
     const fechAvailableWorkers = async () => {
-      const availableHomeWorkers = await getCollection(HOMEWORKERS) //alcanzo todos los trabajadores de casa desde la BD
+      const availableHomeWorkers = await getCollection(HOMEWORKERS); //alcanzo todos los trabajadores de casa desde la BD
+      const availableOutsideWorkers = await getCollection(OUTSIDEWORKERS);
       addAvailableHomeWorker(availableHomeWorkers); //agrego los trabajadores de casa disponibles al estado global
-      console.log("en today se agrega al estado global los trabajadores disponibles", availableHomeWorkers);
+      addAvailableOutsideWorkers(availableOutsideWorkers);
+      console.log("en today se agrega al estado global los trabajadores disponibles", availableHomeWorkers, availableOutsideWorkers);
     }
     fechAvailableWorkers();
-
-
   }, [date])
 
   //agregar un sitio nuevo al estado global y a la BD, 
@@ -52,7 +53,7 @@ const Today = () => {
 
       //Aqui estructuramos el objeto Site para un dia especifico
       //el type lo asingamos MV por defecto.
-      const newSite = { siteDayId, client, siteName, types: ["MV"] };
+      const newSite = { siteDayId, client, siteName, types: ["MV"], homeWorkers: [], outsideWorkers: [] };
 
       // Agregamos el sitio al cliente en la BD
       await addSiteToClient(client.id, site);
@@ -83,11 +84,11 @@ const Today = () => {
       <div className="flex">
         <div className="w-2/3">
 
-        <SiteList data={sitesFromStore} day={date} />
+          <SiteList data={sitesFromStore} day={date} />
         </div>
         <div className="w-1/3">
 
-        <WorkersTable />
+          <WorkersTable />
         </div>
       </div>
 

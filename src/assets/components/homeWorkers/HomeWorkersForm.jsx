@@ -7,7 +7,8 @@ import { BussinesIcon } from "../../icons/SvgIcons.jsx"; //todo cambiar el icono
 import { grey } from "@mui/material/colors";
 import HomeWorkersSkillSelector from "./HomeWorkersSkillsSector.jsx";
 import { useState } from "react";
-useState
+import { capitalize } from "../../tools/capitalize.js";
+
 
 const white = grey["A100"];
 
@@ -39,13 +40,13 @@ const HomeWorkersForm = ({ onSendNewWorker }) => {
     }
     let docAdded = await setDocWithId(HOMEWORKERS, dni, {
       dni: dni,
-      workerName: name,
-      workerAlias: alias,
+      workerName: capitalize(name),
+      workerAlias: capitalize(alias),
       isActive: true,
       currentSite: {},
       lastSites: [],
       skills: skills,
-      workerCompany: "Cisa",
+      company: {id:"A19199892", subName: "Cisa"},
     });
     if (docAdded.status === "ok") {
       alert("Trabajdor agregado con éxito");
@@ -65,7 +66,7 @@ const HomeWorkersForm = ({ onSendNewWorker }) => {
   };
 
   return (
-    <div className="mt-12 relative border-gray-300 rounded w-1/2 min-w-96 p-6 shadow-md bg-white">
+    <div className="mt-12 relative border-gray-300 rounded w-full min-w-96 p-6 shadow-md bg-white">
       <IconId>
         <BussinesIcon sx={{ color: white, fontSize: 30 }} />
       </IconId>

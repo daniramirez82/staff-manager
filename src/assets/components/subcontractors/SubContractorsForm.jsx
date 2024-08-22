@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { setDocWithId } from "./api.js";
 import { SUBCONTRACTORS } from "../../../db/collections.js";
 import Button from "@mui/material/Button";
-import { TextField } from "@mui/material";
+import { capitalize, TextField } from "@mui/material";
 import IconId from "../../ui/iconId.jsx";
 import { BussinesIcon } from "../../icons/SvgIcons.jsx";
 import { grey } from "@mui/material/colors";
@@ -36,8 +36,8 @@ const SubContractorsForm = ({ onSendNewSub }) => {
     }
     let docAdded = await setDocWithId(SUBCONTRACTORS, nif, {
       nif: nif,
-      subName: name,
-      subAlias: alias,
+      subName: capitalize(name),
+      subAlias: capitalize(alias),
       isActive: true,
       workers: [],
     });

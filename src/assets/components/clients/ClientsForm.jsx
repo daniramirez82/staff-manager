@@ -6,6 +6,7 @@ import { TextField } from "@mui/material";
 import IconId from "../../ui/iconId.jsx";
 import { BussinesIcon } from "../../icons/SvgIcons.jsx";
 import { grey } from "@mui/material/colors";
+import { capitalize } from "../../tools/capitalize.js";
 
 const white = grey["A100"];
 
@@ -36,7 +37,7 @@ const ClientForm = ({ onSendNewClient }) => {
     }
     let docAdded = await setDocWithId(CLIENTS, nif, {
       nif: nif,
-      clientName: name,
+      clientName: capitalize(name),
       clientAlias: alias,
       isActive: true,
     });

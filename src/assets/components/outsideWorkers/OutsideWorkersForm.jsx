@@ -7,6 +7,7 @@ import IconId from "../../ui/iconId.jsx";
 import { BussinesIcon } from "../../icons/SvgIcons.jsx"; //todo cambiar el icono por uno referente a trabajadores propios
 import { grey } from "@mui/material/colors";
 import SubContracAutoComplete from "./subContractorsAutoComp.jsx";
+import { capitalize } from "../../tools/capitalize.js";
 
 const white = grey["A100"];
 
@@ -40,8 +41,8 @@ const OutsideWorkersForm = ({ onSendNewWorker }) => {
     }
     let docAdded = await setDocWithId(OUTSIDEWORKERS, dni, {
       dni: dni,
-      workerName: name,
-      workerAlias: alias,
+      workerName: capitalize(name),
+      workerAlias: capitalize(alias),
       isActive: true,
       currentSite: {},
       lastSites: [],

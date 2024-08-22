@@ -51,8 +51,8 @@ const SideMenu = ({ menuIsOpen, setMenuIsOpen }) => {
     { text: DAYS, icon: <CalendarMonthSharpIcon /> , title:"Home"},
     { text: CLIENTS, icon: <GroupIcon /> , title:"Clientes"},
     { text: SUBCONTRACTORS, icon: <WorkIcon /> , title:"Subcontratas"},
-    { text: HOMEWORKERS, icon: <HomeWorkIcon /> , title: "Trab. Cisa"},
-    { text: OUTSIDEWORKERS, icon: <SupervisorAccountIcon /> , title:"Trab. Externos"},
+    { text: HOMEWORKERS, icon: <HomeWorkIcon /> , title: "Trabajadores Cisa"},
+    { text: OUTSIDEWORKERS, icon: <SupervisorAccountIcon /> , title:"Trabajadores Externos"},
   ];
 
   return (

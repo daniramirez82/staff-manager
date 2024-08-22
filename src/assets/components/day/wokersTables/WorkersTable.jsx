@@ -5,12 +5,26 @@ import { useWorkersStore } from "../../../stores/dayStore";
 
 const WorkersTable = () => {
     const availableHomeWorkers = useWorkersStore(state => state.availableHomeWorkers);
-
+    const availableOutsideWorkers = useWorkersStore(state => state.availableOutsideWorkers);
     return (
-        <div>
-            {availableHomeWorkers.map((worker) => (
-                <span key={worker.id}>{worker.workerAlias}</span>
-            ))}
+        <div className="flex ">
+            <div className=" bg-fuchsia-400">
+                <div>Trabajadores Cisa</div>
+                <div className="">
+                    
+                {availableHomeWorkers.map((worker) => (
+                    <span className="pl-2" key={worker.id}>{worker.workerAlias}</span>
+                ))}
+                </div>
+            </div>
+            <div className="bg-green-300">
+                <div>Trabajadores externos</div>
+                <div className="">
+                {availableOutsideWorkers.map((worker) => (
+                    <span className="pl-2" key={worker.id}>{worker.workerAlias}</span>
+                ))}
+                </div>
+            </div>
         </div>
     );
 }
