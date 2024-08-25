@@ -6,25 +6,24 @@ import { Chip, MenuItem } from "@mui/material";
 import { OUTSIDEWORKERS } from "../../../../../db/collections";
 import { getCollection } from "../../../outsideWorkers/api";
 import PropTypes from "prop-types";
+import { useWorkersStore } from "../../../../stores/dayStore";
 
 const AddOutsideWorkersSelector = ({ handleAddWorkers, workersOnState }) => {
   const [options, setOptions] = useState([]);
   const [selectedWorkers, setSelectedWorkers] = useState([]);
+  const availableOutsideWorkers = useWorkersStore(state => state.availableOutsideWorkers);
+  
 
   useEffect(() => {
-    const fetchOutsideWorkers = async () => {
-      // Tomar de la DB todos los trabajadores home workers que no tengan un site asignado
-      const outsideWorkers = await getCollection(OUTSIDEWORKERS);
 
-      const availableOutsideWorkers = outsideWorkers.filter(
+      const outsideWorkers = availableOutsideWorkers.filter(
         (worker) => Object.keys(worker.currentSite).length === 0
       );
 
-      setOptions(availableOutsideWorkers);
-    };
+      setOptions(outsideWorkers);
+  
 
-    fetchOutsideWorkers();
-  }, []);
+  }, [availableOutsideWorkers]);
 
   // Cargar la prop workersOnState en selectedWorkers solo una vez
   useEffect(() => {

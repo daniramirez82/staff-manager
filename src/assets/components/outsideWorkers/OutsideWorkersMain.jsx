@@ -70,6 +70,7 @@ export const OutsideWorkersMain = () => {
                 workerName={worker.workerName}
                 workerDni={worker.dni}
                 workerCompany={worker.workerCompany}
+                workerSkills = {worker.skills}
                 isActive ={worker.isActive}
                 deleteWorker={deleteWorker}
                 onChange={reloadList}

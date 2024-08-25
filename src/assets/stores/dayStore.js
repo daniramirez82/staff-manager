@@ -74,9 +74,8 @@ export const useWorkersStore = create((set, get) => ({
 
 
 // Agregar un trabajador a una site
-//todo agregar un parametro a la función que defina si los trabajadores añadidos son de cisa o son externos
-//si son de cisa agregar a site.homeWorkers
-// si son externos agregar a site.outSideWorkers
+//todo: a los trabajdores que lleguen nuevos hay que comparar con los que ya estaban
+//los nuevo se agregan y los que no existen en el nuevo array hay que borrarles el current id y actualizar esto en store y en BD
 export const handleAddWorkersToSite = (siteDayId, newWorkers, company) => {
   console.log("estos son los trabajadores que llegan al store", newWorkers)
   const { sites, editSite } = useSitesStore.getState();

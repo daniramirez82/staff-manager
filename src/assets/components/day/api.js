@@ -4,6 +4,7 @@ import { db } from "../../../../firebaseConfig";
 import {
   collection,
   setDoc,
+  getDoc,
   doc,
   updateDoc,
   getDocs
@@ -11,15 +12,33 @@ import {
 
 export const addSiteToDailyEntry = async (myCollection, dayId, data) => {
   try {
-    const docRef = doc(db, myCollection, dayId, "sites", data.siteDayId);
-    await setDoc(docRef, data);
-    return { status: "ok", docRef };
+    // Referencia al documento principal en la colección
+    const dayDocRef = doc(db, myCollection, dayId);
+
+    // Verificar si el documento existe
+    const dayDocSnapshot = await getDoc(dayDocRef);
+
+    if (!dayDocSnapshot.exists()) {
+      // Si el documento no existe, crearlo con el objeto inicial
+      const today = new Date().toISOString().split("T")[0]; // Formato de fecha YYYY-MM-DD
+      const initialData = { date: today, availableWorkers: [] };
+      await setDoc(dayDocRef, initialData);
+    }
+
+    // Referencia al documento dentro de la subcolección "sites"
+    const siteDocRef = doc(dayDocRef, "sites", data.siteDayId);
+    
+    // Agregar o actualizar el documento en la subcolección
+    await setDoc(siteDocRef, data);
+
+    return { status: "ok", docRef: siteDocRef };
   } catch (error) {
     console.error("Error agregando cambios: ", error);
     alert("Hubo un error agregando los cambios API");
     return { status: "fail" };
   }
 };
+
 
 export const getSitesFromDailyEntry = async (myCollection, dayId) => {
   try {

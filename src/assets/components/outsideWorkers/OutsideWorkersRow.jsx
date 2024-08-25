@@ -8,6 +8,7 @@ import { TrashIcon } from "../../icons/SvgIcons";
 const OutsideWorkerRow = ({
   workerName,
   workerDni,
+  workerSkills,
   isActive,
   deleteWorker,
   onChange,
@@ -50,9 +51,11 @@ const OutsideWorkerRow = ({
           {workerName && workerName.charAt(0).toUpperCase()}
         </div>
       </div>
+
       <div className="w-9/12 flex-col pl-2">
         <div className="text-stone-700">{workerName}</div>
         <div className="font-light text-sm text-stone-500">{workerDni}</div>
+        {workerSkills && workerSkills.map((skill)=>(<span key={skill}className="pl-1">{skill}</span>))}
       </div>
       {/* status */}
       <div className="w-1/12 flex justify-center items-center ">

@@ -4,27 +4,24 @@ import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
 import { Chip, MenuItem } from "@mui/material";
 import { HOMEWORKERS } from "../../../../../db/collections";
-import { getCollection } from "../../../homeWorkers/api";
 import PropTypes from "prop-types";
+import { useWorkersStore } from "../../../../stores/dayStore";
+
+
+//todo cambiar este selector se nutra del store y de los trabajdores disponibles en el estore
 
 const AddHomeWorkersSelector = ({ handleAddWorkers, workersOnState }) => {
   const [options, setOptions] = useState([]);
   const [selectedWorkers, setSelectedWorkers] = useState([]);
+  const availableHomeWorkers = useWorkersStore(state => state.availableHomeWorkers);
+
 
   useEffect(() => {
-    const fetchHomeWorkers = async () => {
-      // Tomar de la DB todos los trabajadores home workers que no tengan un site asignado
-      const homeWorkers = await getCollection(HOMEWORKERS);
-    
-      const availableHomeWorkers = homeWorkers.filter(
-        (worker) => Object.keys(worker.currentSite).length === 0
-      );
+    const homeWorkers = availableHomeWorkers.filter(
+      (worker) => Object.keys(worker.currentSite).length === 0)
+    setOptions(homeWorkers);
 
-      setOptions(availableHomeWorkers);
-    };
-
-    fetchHomeWorkers();
-  }, []);
+  }, [availableHomeWorkers]);
 
   // Cargar la prop workersOnState en selectedWorkers solo una vez
   useEffect(() => {
@@ -48,14 +45,14 @@ const AddHomeWorkersSelector = ({ handleAddWorkers, workersOnState }) => {
       value={selectedWorkers}
       disableCloseOnSelect
       onChange={handleWorkerSelection}
-      isOptionEqualToValue={(option, value) => option.dni === value.dni} 
+      isOptionEqualToValue={(option, value) => option.dni === value.dni}
       renderOption={(props, option, { selected }) => (
         <MenuItem {...props} key={option.workerAlias}>
           <Checkbox checked={selected} key={option.workerAlias} style={{ marginRight: 8 }} />
           {option.workerAlias}
         </MenuItem>
       )}
-      renderTags={(tagValue, getTagProps) => 
+      renderTags={(tagValue, getTagProps) =>
         tagValue.map((option, index) => (
           <Chip {...getTagProps({ index })} key={option.dni} label={option.workerAlias} />
         ))

@@ -11,17 +11,30 @@ const SiteRow = ({ i, day, siteDayId, client, site, types, homeWorkers, outsideW
   const [open, setOpen] = useState(false);
   const addSiteTypes = useSitesStore((state) => state.editSiteType);
 
-  // Lógica para agregar un trabajador al store y a la db
+  // Lógica para agregar un trabajador a un sitio en el store y a la db
   const handleAddWorkers = async (workers, company) => {
+    //se asigna a cada trabajador el site actual si ya no lo tuviese
+    const signedWorkersToSite = workers.map(worker => {
+      if (worker.currentSite.siteDayID === siteDayId && worker.currentSite.site === site) {
+        return worker;
+      } else {
+        return {
+          ...worker,
+          currentSite: { siteDayId, site }
+        };
+      }
+    })
+
     try {
-      const editedSite = await handleAddWorkersToSite(siteDayId, workers, company);
-      addSiteToDailyEntry(DAYS, day, editedSite);
+      const editedSite = await handleAddWorkersToSite(siteDayId, signedWorkersToSite, company); // actualiza el sitio en el estado global y devuelve el sitio actualizado
+      addSiteToDailyEntry(DAYS, day, editedSite); //actualiza la base de datos
+      //todo actualizar en la  del trabajador cua les su current side
     } catch (err) {
       console.log(err)
-      alert("No se pudieron realizar los cambios, recargue la pagina para comenzar de nuevo", {err});
+      alert("No se pudieron realizar los cambios, recargue la pagina para comenzar de nuevo", { err });
     }
   };
-//Lógica para cambiar los tipo de obra
+  //Lógica para cambiar los tipo de obra
   const handleAddTypes = (newTypes) => {
     // Actualizar estado global de los tipos recibidos
     addSiteTypes(siteDayId, newTypes);
@@ -44,7 +57,7 @@ const SiteRow = ({ i, day, siteDayId, client, site, types, homeWorkers, outsideW
             </span>
           ))}
         </div>
-        <HomeWorkersCell handleAddWorkers={handleAddWorkers} homeWorkers={homeWorkers}/>
+        <HomeWorkersCell handleAddWorkers={handleAddWorkers} homeWorkers={homeWorkers} />
         <OutsideWorkersCell handleAddWorkers={handleAddWorkers} outsideWorkers={outsideWorkers} />
       </div>
       {open && <TypeSelectModal open={open} onClose={() => setOpen(false)} onSave={handleAddTypes} />}

@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { getCollection, setDocWithId } from "./api.js";
-import { OUTSIDEWORKERS, SUBCONTRACTORS } from "../../../db/collections.js";
+import React, { useState } from "react";
+import { setDocWithId } from "./api.js";
+import { OUTSIDEWORKERS } from "../../../db/collections.js";
 import Button from "@mui/material/Button";
 import { TextField } from "@mui/material";
 import IconId from "../../ui/iconId.jsx";
@@ -8,6 +8,7 @@ import { BussinesIcon } from "../../icons/SvgIcons.jsx"; //todo cambiar el icono
 import { grey } from "@mui/material/colors";
 import SubContracAutoComplete from "./subContractorsAutoComp.jsx";
 import { capitalize } from "../../tools/capitalize.js";
+import OutsideWorkersSkillSelector from "./OutsideWorkersSkillsSector.jsx";
 
 const white = grey["A100"];
 
@@ -19,6 +20,7 @@ const OutsideWorkersForm = ({ onSendNewWorker }) => {
   const [alias, setAlias] = useState("");
   const [company, setCompany] = useState("");
   const [dniError, setDniError] = useState("");
+  const [skills, setSkills] = useState([]);
 
   // Expresión regular para validar nie y dni español (personas físicas nacionales y extrajeros)
   const dniRegex = /^[XYZ]?\d{7,8}[A-Z]$/;
@@ -47,6 +49,7 @@ const OutsideWorkersForm = ({ onSendNewWorker }) => {
       currentSite: {},
       lastSites: [],
       company: company,
+      skills: skills,
     });
     if (docAdded.status === "ok") {
       alert("Trabajdor agregado con éxito");
@@ -55,6 +58,7 @@ const OutsideWorkersForm = ({ onSendNewWorker }) => {
       setName("");
       setAlias("");
       setCompany("");
+      setSkills([]);
     } else {
       console.log("Error agregando trabajador: ", docAdded.error);
       alert("Hubo un error agregando el trabajador, intentelo mas tarde");
@@ -62,6 +66,7 @@ const OutsideWorkersForm = ({ onSendNewWorker }) => {
       setName("");
       setAlias("");
       setCompany("");
+      setSkills([]);
     }
   };
 
@@ -113,6 +118,7 @@ const OutsideWorkersForm = ({ onSendNewWorker }) => {
             required
           />
         </div>
+        <OutsideWorkersSkillSelector onChangeSkills={setSkills}/>
         <div className ="pb-4">
           <SubContracAutoComplete setCompany={setCompany}/>
         </div>

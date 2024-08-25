@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 const options = ['Lana', 'Mortero', 'Sellado', 'Pintura', 'Chorro', 'Placa', 'Ayudante'];
 
-const HomeWorkersSkillSelector = ({ onChangeSkills }) => {
+const OutsideWorkersSkillSelector = ({ onChangeSkills }) => {
     const [selectedOptions, setSelectedOptions] = useState([]);
 
     const handleChange = (event) => {
@@ -33,5 +33,5 @@ const HomeWorkersSkillSelector = ({ onChangeSkills }) => {
     );
 };
 
-export default HomeWorkersSkillSelector;
+export default OutsideWorkersSkillSelector;
 
