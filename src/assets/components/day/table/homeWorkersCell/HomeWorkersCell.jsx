@@ -5,6 +5,7 @@ import AddHomeWorkersSelector from "./AddHomeWorkersSelector";
 const HomeWorkersCell = ({ homeWorkers, handleAddWorkers }) => {
   const [homeWorkersOpen, setHomeWorkersOpen] = useState(false);
 
+
   //este useEffect controla el uso de la letra esc para cerrar el selector de trabajadores
   useEffect(() => {
     const handleKeyDown = (event) => {

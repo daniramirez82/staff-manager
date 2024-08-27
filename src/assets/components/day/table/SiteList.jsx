@@ -16,8 +16,6 @@ const SiteList = ({ data, day }) => {
               client={item.client.clientAlias}
               site={item.siteName}
               types={item.types}
-              homeWorkers={item.homeWorkers}
-              outsideWorkers={item.outsideWorkers}
             />
           </li>
         ))}

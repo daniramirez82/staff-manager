@@ -55,23 +55,6 @@ export const useSitesStore = create((set, get) => ({
 
 }));
 
-export const useWorkersStore = create((set, get) => ({
-
-  availableHomeWorkers: [],
-  availableOutsideWorkers: [],
-
-  // Añadir trabajadores disponibles a availableHomeWorkers
-  addAvailableHomeWorker: (workers) => {
-    set({ availableHomeWorkers: workers });
-  },
-
-  // Añadir trabajadores disponibles a availableOutsideWorkers
-  addAvailableOutsideWorker: (workers) => {
-    set({ availableOutsideWorkers: workers });
-  }
-}))
-
-
 
 // Agregar un trabajador a una site
 //todo: a los trabajdores que lleguen nuevos hay que comparar con los que ya estaban
@@ -107,3 +90,79 @@ export const handleDeleteWorkerFromSite = (siteId, workerId) => {
     return site;
   }
 };
+
+export const useWorkersStore = create((set, get) => ({
+
+  availableHomeWorkers: [],
+  availableOutsideWorkers: [],
+
+  addAvailableHomeWorker: (workers) => {
+    // Filtrar trabajadores activos
+    const activeWorkers = workers.filter(worker => worker.isActive === true);
+    
+    // Actualizar el estado con los trabajadores activos
+    set({ availableHomeWorkers: activeWorkers });
+    return activeWorkers;
+  },
+  
+  addAvailableOutsideWorker: (workers) => {
+    // Filtrar trabajadores activos
+    const activeWorkers = workers.filter(worker => worker.isActive === true);
+    
+    // Actualizar el estado con los trabajadores activos
+    set({ availableOutsideWorkers: activeWorkers });
+    return activeWorkers;
+  },
+
+
+  // Función para actualizar availableHomeWorker
+  updateAvailableHomeWorkers: (workers) => {
+    // Obtener el estado actual de availableHomeWorkers
+    const currentHomeWorkers = get().availableHomeWorkers;
+
+    // Crear una lista actualizada de trabajadores
+    const updatedHomeWorkers = currentHomeWorkers.map(existingWorker => {
+      const workerToUpdate = workers.find(worker => worker.id === existingWorker.id);
+      return workerToUpdate ? { ...existingWorker, ...workerToUpdate } : existingWorker;
+    });
+
+    // Agregar nuevos trabajadores que no están en el estado actual
+    const newWorkers = workers.filter(
+      worker => !currentHomeWorkers.some(existingWorker => existingWorker.id === worker.id)
+    );
+
+    // Combinar la lista actualizada con los nuevos trabajadores
+    const finalHomeWorkers = [...updatedHomeWorkers, ...newWorkers];
+   
+    // Actualizar el estado
+    set({ availableHomeWorkers: finalHomeWorkers });
+
+    return finalHomeWorkers;
+  },
+
+  // Función para actualizar availableOutsideWorkers
+  updateAvailableOutsideWorkers: (workers) => {
+    // Obtener el estado actual de availableOutsideWorkers
+    const currentOutsideWorkers = get().availableOutsideWorkers;
+
+    // Crear una lista actualizada de trabajadores
+    const updatedOutsideWorkers = currentOutsideWorkers.map(existingWorker => {
+      const workerToUpdate = workers.find(worker => worker.id === existingWorker.id);
+      return workerToUpdate ? { ...existingWorker, ...workerToUpdate } : existingWorker;
+    });
+
+    // Agregar nuevos trabajadores que no están en el estado actual
+    const newWorkers = workers.filter(
+      worker => !currentOutsideWorkers.some(existingWorker => existingWorker.id === worker.id)
+    );
+
+    // Combinar la lista actualizada con los nuevos trabajadores
+    const finalOutsideWorkers = [...updatedOutsideWorkers, ...newWorkers];
+
+    // Actualizar el estado
+    set({ availableOutsideWorkers: finalOutsideWorkers });
+
+    return finalOutsideWorkers;
+  }
+
+}));

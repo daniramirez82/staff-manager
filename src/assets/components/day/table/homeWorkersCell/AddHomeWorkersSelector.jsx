@@ -8,19 +8,15 @@ import PropTypes from "prop-types";
 import { useWorkersStore } from "../../../../stores/dayStore";
 
 
-//todo cambiar este selector se nutra del store y de los trabajdores disponibles en el estore
-
 const AddHomeWorkersSelector = ({ handleAddWorkers, workersOnState }) => {
   const [options, setOptions] = useState([]);
   const [selectedWorkers, setSelectedWorkers] = useState([]);
   const availableHomeWorkers = useWorkersStore(state => state.availableHomeWorkers);
 
-
   useEffect(() => {
     const homeWorkers = availableHomeWorkers.filter(
       (worker) => Object.keys(worker.currentSite).length === 0)
     setOptions(homeWorkers);
-
   }, [availableHomeWorkers]);
 
   // Cargar la prop workersOnState en selectedWorkers solo una vez

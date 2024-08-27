@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import NewSiteModal from "./newSiteModal/NewSiteModal";
 import { Button, } from "@mui/material";
 import { addSiteToClient } from "../clients/api";
-import { addSiteToDailyEntry, getSitesFromDailyEntry } from "./api";
+import { addSiteToDailyEntry, getSitesFromDailyEntry, saveAvailableWorkers } from "./api";
 import { DAYS, HOMEWORKERS, OUTSIDEWORKERS } from "../../../db/collections";
 import { getCurrentDate } from "../../tools/dateTools";
 import SiteList from "./table/SiteList";
@@ -33,17 +33,25 @@ const Today = () => {
     }
     fechSitesFromDB();
 
-    //alcanza todos los trabajadores (de casa y de afuera) disponibles en el día 
-    //y los agrega al estado global
+
+    //alcanza todos los trabajadores  disponibles en el día 
+    //y los agrega al estado global y BD
     const fechAvailableWorkers = async () => {
-      const availableHomeWorkers = await getCollection(HOMEWORKERS); //alcanzo todos los trabajadores de casa desde la BD
-      const availableOutsideWorkers = await getCollection(OUTSIDEWORKERS);
-      addAvailableHomeWorker(availableHomeWorkers); //agrego los trabajadores de casa disponibles al estado global
-      addAvailableOutsideWorkers(availableOutsideWorkers);
+
+      //alcanzo todos los trabajadores desde la BD
+      const homeWorkers = await getCollection(HOMEWORKERS); 
+      const outsideWorkers = await getCollection(OUTSIDEWORKERS);
+
+       //agrego los trabajadores de casa disponibles al estado global
+      const availableHomeWorkers =  addAvailableHomeWorker(homeWorkers);
+      const availableOutsideWorkers =  addAvailableOutsideWorkers(outsideWorkers);
+      //respaldo en la BD los trabajadores disponibles para este día
+      saveAvailableWorkers(DAYS, date, availableHomeWorkers, availableOutsideWorkers);
       console.log("en today se agrega al estado global los trabajadores disponibles", availableHomeWorkers, availableOutsideWorkers);
     }
     fechAvailableWorkers();
   }, [date])
+
 
   //agregar un sitio nuevo al estado global y a la BD, 
   const handleAddSite = async (client, site) => {
@@ -53,9 +61,9 @@ const Today = () => {
 
       //Aqui estructuramos el objeto Site para un dia especifico
       //el type lo asingamos MV por defecto.
-      const newSite = { siteDayId, client, siteName, types: ["MV"], homeWorkers: [], outsideWorkers: [] };
+      const newSite = { siteDayId, client, siteName, types: ["MV"] };
 
-      // Agregamos el sitio al cliente en la BD
+      // Agregamos el nombre (dirección de la obra) sitio al cliente en la BD
       await addSiteToClient(client.id, site);
 
       // Actualizamos el estado local con la lista de sitios ordenada
