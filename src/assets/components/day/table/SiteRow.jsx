@@ -50,27 +50,22 @@ const SiteRow = ({ i, day, siteDayId, client, site, types }) => {
 
   // Lógica para agregar un trabajador a un sitio en el store y a la db
   const handleAddWorkers = async (workers, typeOfWorker) => {
-    console.log(workers);
     // Se asigna a cada trabajador el sitio actual 
     const signedWorkersToSite = workers.map((worker) => ({...worker, currentSite: {siteDayId, site}}));
-console.log(signedWorkersToSite);
     try {
       let homeWorkersForDB = [];
       let outsideWorkersForDB = [];
 
       // Actualiza el sitio asignado a cada trabajador en el estado global
       if (typeOfWorker === HOMEWORKERS) {
-        homeWorkersForDB = await updateAvailableHomeWorkers(
-          signedWorkersToSite
-        );
+        homeWorkersForDB = await updateAvailableHomeWorkers(signedWorkersToSite, siteDayId);
       } else {
         outsideWorkersForDB = await updateAvailableOutsideWorkers(
           signedWorkersToSite
         );
       }
-
       // Actualiza los trabajadores que se les asignó un sitio en la BD
-      saveAvailableWorkers(DAYS, day, homeWorkersForDB, outsideWorkersForDB);
+      saveAvailableWorkers(DAYS, day, availableHomeWorkers, outsideWorkersForDB);
     } catch (err) {
       console.log(err);
       alert(

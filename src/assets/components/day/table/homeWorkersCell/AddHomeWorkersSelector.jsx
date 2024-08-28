@@ -15,7 +15,7 @@ const AddHomeWorkersSelector = ({ handleAddWorkers, workersOnState }) => {
 
   useEffect(() => {
     const homeWorkers = availableHomeWorkers.filter(
-      (worker) => Object.keys(worker.currentSite).length === 0)
+      (worker) => worker.currentSite && Object.keys(worker.currentSite).length === 0)
     setOptions(homeWorkers);
   }, [availableHomeWorkers]);
 
