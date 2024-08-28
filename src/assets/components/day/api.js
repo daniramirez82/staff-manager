@@ -38,59 +38,52 @@ export const addSiteToDailyEntry = async (myCollection, dayId, data) => {
 //  * @param {Array} homeWorkers - Array de objetos que representa a los homeWorkers.
 //  * @param {Array} outsideWorkers - Array de objetos que representa a los outsideWorkers.
 //  */
-export const saveAvailableWorkers = async (myCollection, dayId, homeWorkers, outsideWorkers) => {
-  console.log("llega a la funcion de la api de todoy los trabajadores para ser agregados a la BD", homeWorkers, outsideWorkers )
+export const saveAvailableWorkers = async (myCollection, dayId, homeWorkers = [], outsideWorkers = []) => {
+  console.log("lelgan a la api trabajadores de una obra", homeWorkers, outsideWorkers );
   try {
-    // Usa un batch para realizar las escrituras en una operación atómica
     const batch = writeBatch(db);
 
-    // Referencias a las subcolecciones
-    const homeWorkersCollectionRef = collection(db, myCollection, dayId, 'AvailableHomeWorkers');
-    const outsideWorkersCollectionRef = collection(db, myCollection, dayId, 'AvailableOutsideWorkers');
+    // Guardar homeWorkers si se proporcionan
+    if (homeWorkers.length > 0) {
+      const homeWorkersCollectionRef = collection(db, myCollection, dayId, 'AvailableHomeWorkers');
+      const existingHomeWorkersSnapshot = await getDocs(homeWorkersCollectionRef);
+      const existingHomeWorkerIds = existingHomeWorkersSnapshot.docs.map(doc => doc.id);
+      const newHomeWorkerIds = new Set(homeWorkers.map(worker => worker.id));
 
-    // Obtener todos los documentos existentes en las subcolecciones
-    const existingHomeWorkersSnapshot = await getDocs(homeWorkersCollectionRef);
-    const existingOutsideWorkersSnapshot = await getDocs(outsideWorkersCollectionRef);
+      existingHomeWorkerIds.forEach(id => {
+        if (!newHomeWorkerIds.has(id)) {
+          const workerDocRef = doc(db, myCollection, dayId, 'AvailableHomeWorkers', id);
+          batch.delete(workerDocRef);
+        }
+      });
 
-    // Convertir las snapshots a arrays de IDs
-    const existingHomeWorkerIds = existingHomeWorkersSnapshot.docs.map(doc => doc.id);
-    const existingOutsideWorkerIds = existingOutsideWorkersSnapshot.docs.map(doc => doc.id);
+      homeWorkers.forEach(worker => {
+        const workerDocRef = doc(db, myCollection, dayId, 'AvailableHomeWorkers', worker.id);
+        batch.set(workerDocRef, worker);
+      });
+    }
 
-    // Convertir los arrays de trabajadores a conjuntos de IDs
-    const newHomeWorkerIds = new Set(homeWorkers.map(worker => worker.id));
-    const newOutsideWorkerIds = new Set(outsideWorkers.map(worker => worker.id));
+    // Guardar outsideWorkers si se proporcionan
+    if (outsideWorkers.length > 0) {
+      const outsideWorkersCollectionRef = collection(db, myCollection, dayId, 'AvailableOutsideWorkers');
+      const existingOutsideWorkersSnapshot = await getDocs(outsideWorkersCollectionRef);
+      const existingOutsideWorkerIds = existingOutsideWorkersSnapshot.docs.map(doc => doc.id);
+      const newOutsideWorkerIds = new Set(outsideWorkers.map(worker => worker.id));
 
-    // Determinar qué documentos deben eliminarse de cada subcolección
-    existingHomeWorkerIds.forEach(id => {
-      if (!newHomeWorkerIds.has(id)) {
-        const workerDocRef = doc(db, myCollection, dayId, 'AvailableHomeWorkers', id);
-        batch.delete(workerDocRef);
-      }
-    });
+      existingOutsideWorkerIds.forEach(id => {
+        if (!newOutsideWorkerIds.has(id)) {
+          const workerDocRef = doc(db, myCollection, dayId, 'AvailableOutsideWorkers', id);
+          batch.delete(workerDocRef);
+        }
+      });
 
-    existingOutsideWorkerIds.forEach(id => {
-      if (!newOutsideWorkerIds.has(id)) {
-        const workerDocRef = doc(db, myCollection, dayId, 'AvailableOutsideWorkers', id);
-        batch.delete(workerDocRef);
-      }
-    });
+      outsideWorkers.forEach(worker => {
+        const workerDocRef = doc(db, myCollection, dayId, 'AvailableOutsideWorkers', worker.id);
+        batch.set(workerDocRef, worker);
+      });
+    }
 
-    // Guardar cada homeWorker en la subcolección AvailableHomeWorkers
-    homeWorkers.forEach(worker => {
-      const workerDocRef = doc(db, myCollection, dayId, 'AvailableHomeWorkers', worker.id); // worker.id debe ser único para cada trabajador
-      batch.set(workerDocRef, worker);
-    });
-
-    // Guardar cada outsideWorker en la subcolección AvailableOutsideWorkers
-    outsideWorkers.forEach(worker => {
-      const workerDocRef = doc(db, myCollection, dayId, 'AvailableOutsideWorkers', worker.id); // worker.id debe ser único para cada trabajador
-      batch.set(workerDocRef, worker);
-    });
-
-    // Realizar las escrituras en batch
     await batch.commit();
-
-    console.log("Trabajadores disponibles guardados exitosamente.");
     return { status: "ok" };
   } catch (error) {
     console.error("Error guardando trabajadores disponibles: ", error);
@@ -98,6 +91,7 @@ export const saveAvailableWorkers = async (myCollection, dayId, homeWorkers, out
     return { status: "fail", error };
   }
 };
+
 
 
 export const getSitesFromDailyEntry = async (myCollection, dayId) => {

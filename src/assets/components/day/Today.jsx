@@ -47,7 +47,6 @@ const Today = () => {
       const availableOutsideWorkers =  addAvailableOutsideWorkers(outsideWorkers);
       //respaldo en la BD los trabajadores disponibles para este día
       saveAvailableWorkers(DAYS, date, availableHomeWorkers, availableOutsideWorkers);
-      console.log("en today se agrega al estado global los trabajadores disponibles", availableHomeWorkers, availableOutsideWorkers);
     }
     fechAvailableWorkers();
   }, [date])

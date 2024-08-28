@@ -34,6 +34,8 @@ const SiteRow = ({ i, day, siteDayId, client, site, types }) => {
     (state) => state.availableOutsideWorkers
   );
 
+  console.log("Trabajadores en el store Home",availableHomeWorkers);
+
   useEffect(() => {
     const filteredHomeWorkers = availableHomeWorkers.filter(
       (worker) => worker.currentSite.siteDayId === siteDayId
@@ -46,26 +48,27 @@ const SiteRow = ({ i, day, siteDayId, client, site, types }) => {
     setOutsideWorkers(filteredOutsideWorkers); 
   }, [availableHomeWorkers, availableOutsideWorkers, siteDayId]); 
 
-  console.log("Trabajadores disponibles en el store HOME", availableHomeWorkers);
 
   // Lógica para agregar un trabajador a un sitio en el store y a la db
   const handleAddWorkers = async (workers, typeOfWorker) => {
     // Se asigna a cada trabajador el sitio actual 
     const signedWorkersToSite = workers.map((worker) => ({...worker, currentSite: {siteDayId, site}}));
+    let homeWorkersForDB = [];
     try {
-      let homeWorkersForDB = [];
-      let outsideWorkersForDB = [];
-
       // Actualiza el sitio asignado a cada trabajador en el estado global
       if (typeOfWorker === HOMEWORKERS) {
-        homeWorkersForDB = await updateAvailableHomeWorkers(signedWorkersToSite, siteDayId);
+        //actualizo el Store
+       const homeWorkersForDB = await updateAvailableHomeWorkers(signedWorkersToSite, siteDayId);
+       console.log("los home workes devueltos por el store es", homeWorkersForDB);
+        // Actualiza los trabajadores que se les asignó un sitio en la BD
+        await saveAvailableWorkers(DAYS, day, homeWorkersForDB);
       } else {
-        outsideWorkersForDB = await updateAvailableOutsideWorkers(
-          signedWorkersToSite
-        );
+        //actualizo el store
+        const outsideWorkersForDB = await updateAvailableOutsideWorkers(signedWorkersToSite, siteDayId);
+        // Actualiza los trabajadores que se les asignó un sitio en la BD
+        await saveAvailableWorkers(DAYS, day, undefined, outsideWorkersForDB);
       }
-      // Actualiza los trabajadores que se les asignó un sitio en la BD
-      saveAvailableWorkers(DAYS, day, availableHomeWorkers, outsideWorkersForDB);
+  
     } catch (err) {
       console.log(err);
       alert(
