@@ -18,13 +18,13 @@
 - done: en El Row, espacio para HomeWorkers, y un boton que despliegue un lista donde se rederizen los homeWorkers disponibles en esa obra.
 - done:que los inputs conviertan todos los strings en minusculas con las iniciales en mayusculas.
 - done: trabajadores externos agregar skills.
-- done: en el site Day dos nuevos campos la fecha y los trabajadores disponible
 
-cuando el componente Today llame a los sitio de la bd revise si el sitio ya existe si no existe que cree el dia y cree el date y el availableWorkers tomando los disponibles
-desde la bd tambien.
+. en el site Day dos nuevos campos la fecha y los trabajadores disponibles.
+
+cuando cargue el componente Today y realice la carga de los sites desde la BD revisar si existe, si no existe crear el día con el
 
 Manejar el estado de trabajadores disponibles desde le store. como unico centro de verdad y de la asignación de site a los trabajadroes y el listado de sites que se muetra de
-se alimente del listado de trabajdores disponibles en el estado global y este a su vez tenga su respaldo en el db
+se alimente de este listado diario de disponibles que estara tanto en el global state como en la bd.
 
 - al agregar un trabajador a una site, agregar este site a su currentSite en el Store y en la BD para que en la tabla de trabajadores disponibles aparezca en gris deshabilitado, y que en el listado
     de trabajadores para agregar en la obra no aparezca si ya tiene una obra asignada. 

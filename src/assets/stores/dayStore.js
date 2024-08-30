@@ -65,6 +65,8 @@ export const useSitesStore = create((set, get) => ({
 // Agregar un trabajador a una site
 //todo: a los trabajdores que lleguen nuevos hay que comparar con los que ya estaban
 //los nuevo se agregan y los que no existen en el nuevo array hay que borrarles el current id y actualizar esto en store y en BD
+
+
 export const handleAddWorkersToSite = (siteDayId, newWorkers, company) => {
   console.log("estos son los trabajadores que llegan al store", newWorkers);
   const { sites, editSite } = useSitesStore.getState();
@@ -123,34 +125,22 @@ export const useWorkersStore = create((set, get) => ({
   },
 
   // Función para actualizar availableHomeWorker
+  
   updateAvailableHomeWorkers: (workers, siteDayId) => {
-    let updatedWorkers = [];
+   const globalList = get().availableHomeWorkers;
+   console.log(globalList);
 
-    set((state) => {
-      const workerIds = new Set(workers.map((worker) => worker.id));
+   const mapNewIds = {};
+        workers.forEach(([id, currentSite]) => {
+            mapNewIds[id] = currentSite;
+        });
+   
+   const updatedWorkers = globalList.map(globalWorker =>{
+    const obraNueva = mapNewIds[globalWorker.id];
+      if(obraNueva) {
 
-      const oldWorkers = state.availableHomeWorkers.filter(
-        (worker) => worker.currentSite?.siteDayId === siteDayId
-      );
-
-      oldWorkers.forEach((oldWorker) => {
-        if (!workerIds.has(oldWorker.id)) {
-          delete oldWorker.currentSite;
-        }
-      });
-      state.availableHomeWorkers = state.availableHomeWorkers.map((worker) => {
-        const oldWorker = oldWorkers.find((ow) => ow.id === worker.id);
-        const newWorker = workers.find((w) => w.id === worker.id);
-        if (oldWorker) {
-          return { ...worker, ...oldWorker };
-        } else if (newWorker) {
-          return { ...worker, currentSite: newWorker.currentSite };
-        }
-        return worker;
-      });
-      updatedWorkers = state.availableHomeWorkers;
-    });
-    return updatedWorkers;
+    }
+   })
   },
 
   // Función para actualizar availableOutsideWorkers
