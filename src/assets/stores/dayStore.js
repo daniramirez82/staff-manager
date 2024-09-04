@@ -66,7 +66,6 @@ export const useSitesStore = create((set, get) => ({
 //todo: a los trabajdores que lleguen nuevos hay que comparar con los que ya estaban
 //los nuevo se agregan y los que no existen en el nuevo array hay que borrarles el current id y actualizar esto en store y en BD
 
-
 export const handleAddWorkersToSite = (siteDayId, newWorkers, company) => {
   console.log("estos son los trabajadores que llegan al store", newWorkers);
   const { sites, editSite } = useSitesStore.getState();
@@ -125,22 +124,31 @@ export const useWorkersStore = create((set, get) => ({
   },
 
   // Función para actualizar availableHomeWorker
-  
+
   updateAvailableHomeWorkers: (workers, siteDayId) => {
-   const globalList = get().availableHomeWorkers;
-   console.log(globalList);
+    const globalList = get().availableHomeWorkers;
+    console.log("global list es: " , globalList);
+    console.log("los workers que llegan a store: " , workers);
 
-   const mapNewIds = {};
-        workers.forEach(([id, currentSite]) => {
-            mapNewIds[id] = currentSite;
-        });
-   
-   const updatedWorkers = globalList.map(globalWorker =>{
-    const obraNueva = mapNewIds[globalWorker.id];
-      if(obraNueva) {
 
-    }
-   })
+    const mapNewIds = {};
+    workers.forEach(([id, currentSite]) => { //hacer la desestructuracion segun nuestro objeto
+      mapNewIds[id] = currentSite;
+    });
+
+    const updatedWorkers = globalList.map((globalWorker) => {
+      const currentSite = mapNewIds[globalWorker.id];
+      if (currentSite) {
+        return { ...globalWorker, currentSite}
+      }else if (globalWorker.currentSite.siteDayId === siteDayId ){
+        return {...globalWorker, currentSite:null}
+      }else{
+        return globalWorker
+      }
+    
+    });
+
+    set({availableHomeworkers: updatedWorkers});
   },
 
   // Función para actualizar availableOutsideWorkers
